@@ -1,0 +1,41 @@
+@layer components {
+    .btn {
+        @apply font-bold rounded btn-base focus:outline-none;
+    }
+
+    .btn-sm {
+        @apply py-1 px-2 text-xs;
+    }
+
+    .btn-base {
+        @apply py-1 px-2 text-sm;
+    }
+
+    .btn-lg {
+        @apply py-2 px-4 text-base;
+    }
+
+    .btn-xl {
+        @apply py-2 px-4 text-lg;
+    }
+
+    .btn-success {
+        @apply bg-green-500 hover:bg-green-600 text-white;
+    }
+
+    .btn-primary {
+        @apply bg-blue-500 hover:bg-blue-600 text-white;
+    }
+
+    .btn-danger {
+        @apply bg-red-500 hover:bg-red-600 text-white;
+    }
+
+    .btn-secondary {
+        @apply bg-gray-500 hover:bg-gray-600 text-white;
+    }
+
+    .position-center {
+        @apply ml-auto mr-auto left-0 right-0 text-center;
+    }
+}
