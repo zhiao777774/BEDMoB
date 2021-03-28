@@ -7,21 +7,30 @@
   },
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@fontsource/oswald": "^4.2.2",
+    "@fortawesome/fontawesome-svg-core": "^1.2.34",
+    "@fortawesome/free-brands-svg-icons": "^5.15.2",
+    "@fortawesome/free-regular-svg-icons": "^5.15.3",
+    "@fortawesome/free-solid-svg-icons": "^5.15.2",
+    "@fortawesome/react-fontawesome": "^0.1.14",
     "express": "^4.17.1",
     "next": "^10.0.9",
+    "next-iron-session": "^4.1.12",
+    "next-session": "^3.4.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2"
   },
   "devDependencies": {
-    "autoprefixer": "^10.2.5",
-    "postcss": "^8.2.8",
-    "postcss-loader": "^5.2.0",
-    "precss": "^4.0.0",
+    "@tailwindcss/custom-forms": "^0.2.1",
+    "autoprefixer": "^10.2.4",
+    "eslint": "^7.21.0",
+    "eslint-plugin-react": "^7.22.0",
+    "postcss": "^8.2.7",
     "tailwindcss": "^2.0.4"
   }
 }
