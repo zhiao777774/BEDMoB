@@ -2,7 +2,7 @@ module.exports = {
   plugins: {
     tailwindcss: {},
     autoprefixer: {
-      browsers: [
+      overrideBrowserslist: [
         // 指定支援的瀏覽器版本
         'Chrome >= 52',
         'FireFox >= 44',
