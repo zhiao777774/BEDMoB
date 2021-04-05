@@ -11,7 +11,8 @@ module.exports = {
         oswald: ['Oswald', 'sans-serif']
       },
       inset: {
-        '11/20': '55%'
+        '11/20': '55%',
+        '18': '4.5rem'
       },
       margin: {
         center: '0 auto'
