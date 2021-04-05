@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
+import Link from 'next/link';
 import { withRouter } from 'next/router';
 import { withIronSession } from 'next-iron-session';
 import Navbar from '@/components/navbar.js';
+import PageTopButton from '@/components/pagetop';
 import Dropdown from '@/components/dropdown';
 import cookieConfig from '@/constants/serverSideCookie';
 import { numberRange } from '@/utils/range';
 import testData from '@/data/test.json';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleUp, faSortUp, faSortDown, faChevronLeft, faChevronRight, faStar as faSolidStar } from '@fortawesome/free-solid-svg-icons';
+import { faSortUp, faSortDown, faChevronLeft, faChevronRight, faStar as faSolidStar } from '@fortawesome/free-solid-svg-icons';
 import { faStar as faHollowStar } from '@fortawesome/free-regular-svg-icons';
 
 
@@ -26,15 +28,9 @@ class Index extends Component {
             page: 1,
             selected: 100,
             orderby: '#',
-            asc: true,
-            showPageTop: false
+            asc: true
         };
     }
-
-    _removeAnchors = () => {
-        const { router } = this.props;
-        router.push(router.asPath.split('#')[0]);
-    };
 
     _setSelected = ({ target }) => {
         const selected = target.getAttribute('d-val') ||
@@ -105,14 +101,6 @@ class Index extends Component {
         this.props.router.push(`/transaction/${url}`);
     };
 
-    componentDidMount() {
-        document.addEventListener('scroll', () => {
-            this.setState({
-                showPageTop: window.scrollY >= window.innerHeight / 3
-            });
-        })
-    }
-
     render() {
         const { start, end, pageSize, page, selected, orderby, asc } = this.state;
         const pageSizes = [100, 50, 20];
@@ -126,7 +114,7 @@ class Index extends Component {
                 case '名稱':
                     const [n1, n2] = [item1.name.toUpperCase(), item2.name.toUpperCase()];
                     return (n1 < n2 ? -1 : 1) * (asc ? 1 : -1);
-                case '價格':
+                case '價格(Wei)':
                     return (item1.price - item2.price) * (asc ? 1 : -1);
                 case '擁有者':
                     const [o1, o2] = [item1.owner.toUpperCase(), item2.owner.toUpperCase()];
@@ -143,6 +131,16 @@ class Index extends Component {
                 <Navbar user={this.props.user} />
                 <main className="p-7 pt-28">
                     <div className="p-20">
+                        <div className="mb-6 font-bold text-sm relative">
+                            <button className="group absolute -bottom-2 left-3 btn btn-sm pt-2 bg-gray-200 hover:bg-gray-300">
+                                <Link href="/watchlist">
+                                    <a>
+                                        <FontAwesomeIcon icon={faHollowStar} size="sm" className="relative -top-0.5 text-gray-500 group-hover:text-black" />
+                                        <span className="ml-2 relative -top-0.5">關注列表</span>
+                                    </a>
+                                </Link>
+                            </button>
+                        </div>
                         <table className="min-w-full border border-l-0 border-r-0 border-gray-300 bg-white relative">
                             <thead>
                                 <tr className="text-xs border-b border-gray-100 tracking-wider text-black">
@@ -163,10 +161,10 @@ class Index extends Component {
                                                 null
                                         }
                                     </th>
-                                    <th className="sticky top-18 bg-indigo-50 z-50 p-3 text-right leading-4 cursor-pointer" d-val="價格" onClick={this._sort}>
-                                        價格
+                                    <th className="sticky top-18 bg-indigo-50 z-50 p-3 text-right leading-4 cursor-pointer" d-val="價格(Wei)" onClick={this._sort}>
+                                        價格(Wei)
                                         {
-                                            orderby === '價格' ?
+                                            orderby === '價格(Wei)' ?
                                                 <FontAwesomeIcon icon={asc ? faSortUp : faSortDown} size="lg" className={'ml-1 ' + (asc ? 'pt-1' : 'pb-1')} /> :
                                                 null
                                         }
@@ -254,10 +252,7 @@ class Index extends Component {
                             </span>
                         </div>
                     </div>
-                    <a className={'scroll-to-top rounded hover:bg-gray-700 ' + (this.state.showPageTop ? 'block' : 'hidden')}
-                        href="#page-top" onClick={this._removeAnchors} >
-                        <FontAwesomeIcon icon={faAngleUp} size="lg" />
-                    </a>
+                    <PageTopButton />
                 </main>
             </div>
         );
