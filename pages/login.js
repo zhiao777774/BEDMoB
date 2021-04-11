@@ -6,6 +6,16 @@ import cookieConfig from '@/constants/serverSideCookie';
 
 
 export default class Login extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            disabled: false
+        };
+
+        this._login = this._login.bind(this);
+    }
+
     _inputRestrictions(e) {
         if (e.keyCode === 13 || e.which === 13)
             e.preventDefault();
@@ -26,6 +36,12 @@ export default class Login extends Component {
         account = account.value;
         password = password.value;
 
+        if (!account || !password) {
+            alert('請輸入帳號及密碼');
+            return;
+        }
+
+        this.setState({ disabled: true });
         const res = await fetch('/api/accounts', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -36,16 +52,19 @@ export default class Login extends Component {
             return Router.push('/');
         } else {
             alert('登入失敗，請重新確認帳號密碼!');
+            this.setState({ disabled: false });
         }
     }
 
     render() {
+        const { disabled } = this.state;
+
         return (
             <div className="h-screen grid grid-rows-1 grid-cols-3 grid-flow-col bg-purple-50">
                 <div className="place-self-center col-span-2 row-span-1">
                     <div className="ml-6 font-bold absolute top-3 left-1">
                         <Link prefetch href="/">
-                            <a className="text-3xl cursor-pointer">
+                            <a className="text-3xl cursor-pointer font-oswald">
                                 <span className="relative ml-3 top-0.5">BEPDPP</span>
                             </a>
                         </Link>
@@ -71,7 +90,9 @@ export default class Login extends Component {
                                     <small className="warning hidden">帳號或密碼錯誤</small>
                                 </div>
                                 <div className="flex items-center justify-between">
-                                    <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded focus:outline-none focus:shadow-outline">登入</button>
+                                    <button type="submit" className={'btn ' + (disabled ? 'bg-gray-300 cursor-not-allowed' : 'btn-primary')} disabled={disabled}>
+                                        {disabled ? '登入中' : '登入'}
+                                    </button>
                                 </div>
                             </form>
                         </div>
