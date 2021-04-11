@@ -28,7 +28,8 @@ class Index extends Component {
             page: 1,
             selected: 100,
             orderby: '#',
-            asc: true
+            asc: true,
+            watchList: []
         };
     }
 
@@ -94,6 +95,17 @@ class Index extends Component {
         if (this.props.user === 'undefined') {
             this.props.router.push('/login');
         }
+
+        const code = target.getAttribute('d-code') ||
+            target.parentNode.getAttribute('d-code');
+        let newWatchList = this.state.watchList;
+
+        if (newWatchList.includes(code))
+            newWatchList = newWatchList.filter((e) => e !== code);
+        else
+            newWatchList.push(code);
+
+        this.setState({ watchList: newWatchList });
     };
 
     _buy = ({ target }) => {
@@ -102,9 +114,10 @@ class Index extends Component {
     };
 
     render() {
-        const { start, end, pageSize, page, selected, orderby, asc } = this.state;
+        const { start, end, pageSize, page, selected, orderby, asc, watchList } = this.state;
         const pageSizes = [100, 50, 20];
         const pageable = this.dataSize / pageSize > 1;
+        const lastPageNumber = Math.ceil(this.dataSize / pageSize);
 
         const data = this.data.slice(start, end + 1);
         data.sort((item1, item2) => {
@@ -144,8 +157,8 @@ class Index extends Component {
                         <table className="min-w-full border border-l-0 border-r-0 border-gray-300 bg-white relative">
                             <thead>
                                 <tr className="text-xs border-b border-gray-100 tracking-wider text-black">
-                                    <th className="sticky top-18 bg-indigo-50 z-50 p-3 pl-9 text-left"></th>
-                                    <th className="sticky top-18 bg-indigo-50 z-50 p-3 text-left leading-4 cursor-pointer" d-val="#" onClick={this._sort}>
+                                    <th className="sticky top-18 bg-indigo-50 z-40 p-3 pl-9 text-left"></th>
+                                    <th className="sticky top-18 bg-indigo-50 z-40 p-3 text-left leading-4 cursor-pointer" d-val="#" onClick={this._sort}>
                                         #
                                         {
                                             orderby === '#' ?
@@ -153,7 +166,7 @@ class Index extends Component {
                                                 null
                                         }
                                     </th>
-                                    <th className="sticky top-18 bg-indigo-50 z-50 p-3 text-right leading-4 cursor-pointer" d-val="名稱" onClick={this._sort}>
+                                    <th className="sticky top-18 bg-indigo-50 z-40 p-3 text-right leading-4 cursor-pointer" d-val="名稱" onClick={this._sort}>
                                         名稱
                                         {
                                             orderby === '名稱' ?
@@ -161,7 +174,7 @@ class Index extends Component {
                                                 null
                                         }
                                     </th>
-                                    <th className="sticky top-18 bg-indigo-50 z-50 p-3 text-right leading-4 cursor-pointer" d-val="價格(Wei)" onClick={this._sort}>
+                                    <th className="sticky top-18 bg-indigo-50 z-40 p-3 text-right leading-4 cursor-pointer" d-val="價格(Wei)" onClick={this._sort}>
                                         價格(Wei)
                                         {
                                             orderby === '價格(Wei)' ?
@@ -169,7 +182,7 @@ class Index extends Component {
                                                 null
                                         }
                                     </th>
-                                    <th className="sticky top-18 bg-indigo-50 z-50 p-3 text-center leading-4 cursor-pointer" d-val="擁有者" onClick={this._sort}>
+                                    <th className="sticky top-18 bg-indigo-50 z-40 p-3 text-center leading-4 cursor-pointer" d-val="擁有者" onClick={this._sort}>
                                         擁有者
                                         {
                                             orderby === '擁有者' ?
@@ -177,7 +190,7 @@ class Index extends Component {
                                                 null
                                         }
                                     </th>
-                                    <th className="sticky top-18 bg-indigo-50 z-50 p-3 text-right leading-4 cursor-pointer" d-val="交易量(24小時)" onClick={this._sort}>
+                                    <th className="sticky top-18 bg-indigo-50 z-40 p-3 text-right leading-4 cursor-pointer" d-val="交易量(24小時)" onClick={this._sort}>
                                         交易量(24小時)
                                         {
                                             orderby === '交易量(24小時)' ?
@@ -185,7 +198,7 @@ class Index extends Component {
                                                 null
                                         }
                                     </th>
-                                    <th className="sticky top-18 bg-indigo-50 z-50 p-3 pr-9"></th>
+                                    <th className="sticky top-18 bg-indigo-50 z-40 p-3 pr-9"></th>
                                 </tr>
                             </thead>
                             <tbody className="font-bold text-sm">
@@ -194,7 +207,9 @@ class Index extends Component {
                                         return (
                                             <tr key={`${owner}-${code}`} className="hover:bg-gray-50 border-b text-right">
                                                 <td className="p-3 pl-9 text-gray-400 text-left">
-                                                    <FontAwesomeIcon icon={faHollowStar} size="sm" className="cursor-pointer hover:text-yellow-400" onClick={this._collect} />
+                                                    <FontAwesomeIcon icon={watchList.includes(code) ? faSolidStar : faHollowStar}
+                                                        size="sm" className={'cursor-pointer ' + (watchList.includes(code) ? 'text-yellow-400' : 'hover:text-yellow-400')}
+                                                        d-code={code} onClick={this._collect} />
                                                 </td>
                                                 <td className="p-3 whitespace-no-wrap text-left">
                                                     <div className="flex items-center">
@@ -233,7 +248,7 @@ class Index extends Component {
                                 }
                                 {
                                     numberRange(page - 3 >= 2 ? 3 + page - 5 : 2, page <= 3 ? 7 : 7 + page - 4).map((i) => {
-                                        if (i !== 1 && i >= Math.ceil(this.dataSize / pageSize)) return null;
+                                        if (i !== 1 && i >= lastPageNumber) return null;
                                         return <button key={`page-${i}`} className={'btn btn-primary rounded-lg px-3 py-2 mr-3 ' + (i === page ? '' : 'bg-white hover:bg-gray-100 text-black')} onClick={this._changePage}>{i}</button>;
                                     })
                                 }
@@ -242,7 +257,11 @@ class Index extends Component {
                                         <button className="btn text-black rounded-lg px-3 py-2 mr-3">...</button> :
                                         null
                                 }
-                                <button className={'btn btn-primary rounded-lg px-3 py-2 mr-3 ' + (Math.ceil(this.dataSize / pageSize) === page ? '' : 'bg-white hover:bg-gray-100 text-black')} onClick={this._changePage}>{Math.ceil(this.dataSize / pageSize)}</button>
+                                {
+                                    lastPageNumber !== 1 ?
+                                        <button className={'btn btn-primary rounded-lg px-3 py-2 mr-3 ' + (lastPageNumber === page ? '' : 'bg-white hover:bg-gray-100 text-black')} onClick={this._changePage}>{lastPageNumber}</button> :
+                                        null
+                                }
                                 <FontAwesomeIcon icon={faChevronRight} size='lg' className="text-gray-700 ml-2 cursor-pointer" style={{ display: pageable ? '' : 'none' }} d-event="next" onClick={pageable ? this._switchPage : undefined} />
                             </span>
                             <span className="absolute -top-1.5 right-3">
