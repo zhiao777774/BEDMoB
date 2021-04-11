@@ -3,31 +3,13 @@ html {
     height: 100%;
 }
 
-body::-webkit-scrollbar {
-    display: none;
-}
-
 body {
     -ms-overflow-style: none;
     height: 100%;
     width: calc(100vw + 18px);
     overflow: auto;
-}
-
-.btn-prev {
-    background: url('/svg/chevron-left-solid.svg') center center no-repeat !important;
-}
-
-.btn-prev::before {
-    display: none;
-}
-
-.btn-next {
-    background: url('/svg/chevron-right-solid.svg') center center no-repeat !important;
-}
-
-.btn-next::before {
-    display: none;
+    overflow-x: hidden;
+    background: rgb(248, 250, 253);
 }
 
 .eventer-compact-list .eventer-event-list-item {
@@ -52,7 +34,7 @@ body {
     transition: all 0.2s ease !important;
 }
 
-.eventer-event-list-item>a {
+.eventer-event-list-item > a {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
@@ -73,7 +55,7 @@ body {
     border-top-color: #02f20e;
 }
 
-.eventer-event-date>span {
+.eventer-event-date > span {
     display: block;
     width: 100%;
     text-align: center;
@@ -85,7 +67,7 @@ body {
     margin-bottom: 6px;
 }
 
-.eventer-event-date>span.eventer-event-month {
+.eventer-event-date > span.eventer-event-month {
     font-size: 14px;
     letter-spacing: 1px;
     margin-bottom: 8px;
@@ -93,7 +75,7 @@ body {
     color: #aeaeae;
 }
 
-.eventer-event-date>span.eventer-event-year {
+.eventer-event-date > span.eventer-event-year {
     font-size: 11px;
     letter-spacing: 2px;
     background-color: #f7f7f7;
@@ -168,13 +150,13 @@ body {
     border-top-color: #c0bdbb;
 }
 
-.eventer-event-info>span {
+.eventer-event-info > span {
     display: block;
     width: 100%;
     text-align: center;
 }
 
-.eventer-event-info>span.eventer-event-date {
+.eventer-event-info > span.eventer-event-date {
     font-size: 11px;
     letter-spacing: 2px;
     background-color: #f7f7f7;
@@ -185,7 +167,7 @@ body {
     border-top-color: transparent;
 }
 
-.eventer-event-info>span.eventer-event-text {
+.eventer-event-info > span.eventer-event-text {
     font-size: 14px;
     font-weight: bold;
     color: red;
@@ -200,21 +182,21 @@ body {
     height: 2.75rem;
     text-align: center;
     color: #fff;
-    background: rgba(90, 92, 105, .5);
+    background: rgba(90, 92, 105, 0.5);
     line-height: 46px;
-    z-index: 50;
+    z-index: 40;
 }
 
 .table td,
 .table th {
-    padding: .75rem;
+    padding: 0.75rem;
 }
 
-input[type=radio]:not(:checked):hover {
+input[type='radio']:not(:checked):hover {
     cursor: pointer;
 }
 
-input[type=checkbox]:hover {
+input[type='checkbox']:hover {
     cursor: pointer;
 }
 
@@ -226,7 +208,7 @@ input[type=checkbox]:hover {
     top: 0;
     left: 0;
     z-index: 10;
-    background-color: rgba(0, 0, 0, .75);
+    background-color: rgba(0, 0, 0, 0.75);
     text-align: center;
     vertical-align: middle;
 }
@@ -277,7 +259,7 @@ div.group-modal .header .closer {
     top: -20px;
     right: -17px;
     font-size: 24px;
-    background-color: #3C3C3C;
+    background-color: #3c3c3c;
     border-radius: 25px;
     cursor: pointer;
 }
