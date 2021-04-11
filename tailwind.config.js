@@ -16,6 +16,9 @@ module.exports = {
       },
       margin: {
         center: '0 auto'
+      },
+      zIndex: {
+        '60': 60
       }
     }
   },
