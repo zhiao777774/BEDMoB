@@ -20,6 +20,7 @@
     "@fortawesome/react-fontawesome": "^0.1.14",
     "d3": "^6.6.2",
     "express": "^4.17.1",
+    "ipfs-http-client": "^49.0.4",
     "next": "^10.0.9",
     "next-iron-session": "^4.1.12",
     "next-session": "^3.4.0",
