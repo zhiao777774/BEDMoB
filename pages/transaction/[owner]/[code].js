@@ -3,6 +3,7 @@ import { withRouter } from 'next/router';
 import { withIronSession } from 'next-iron-session';
 import Navbar from '@/components/navbar.js';
 import PageTopButton from '@/components/pagetop';
+import Wallet from '@/components/wallet';
 import cookieConfig from '@/constants/serverSideCookie';
 
 
@@ -13,7 +14,7 @@ class TransactionPage extends Component {
             <div id="page-top">
                 <Navbar user={this.props.user} />
                 <main className="p-7 pt-28">
-                    {owner}:{code}
+                    <Wallet data={{ payto: owner }} />
                     <PageTopButton />
                 </main>
             </div >
