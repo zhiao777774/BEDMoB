@@ -10,7 +10,8 @@
         "@/data/*": ["assets/data/*"],
         "@/constants/*": ["constants/*"],
         "@/utils/*": ["utils/*"],
-        "@/database": ["api/database"]
+        "@/database": ["api/database"],
+        "@/contracts/*": ["contracts/*"]
       }
     }
   }
