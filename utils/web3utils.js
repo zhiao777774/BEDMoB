@@ -1,21 +1,8 @@
 // ethjs wrap
 import Eth from 'ethjs';
 
-let web3 = null;
-let accounts = [];
+const web3 = (typeof window !== 'undefined' && typeof window.web3 !== 'undefined') ?
+    new Eth(window.web3.currentProvider) :
+    new Eth(new Eth.HttpProvider('http://localhost:7545'));
 
-if (typeof window.web3 !== 'undefined') {
-    web3 = new Eth(window.web3.currentProvider);
-
-    // get accounts
-    web3.accounts().then(accs => {
-        accounts = accs;
-    });
-} else {
-    console.error('No web3? You should consider trying MetaMask!');
-}
-
-export {
-    accounts,
-    web3
-};
+export { web3 };
