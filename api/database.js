@@ -16,7 +16,7 @@ export default class MongoDB {
 
         this._config = config;
         this.client = new MongoClient(
-            `mongodb+srv://${userName}:${password}@cluster0.seebj.mongodb.net/${dbName}?retryWrites=true&w=majority`,
+            `mongodb+srv://${userName}:${password}@bepdpp.ugq6q.mongodb.net/${dbName}?retryWrites=true&w=majority`,
             {
                 useNewUrlParser: true,
                 useUnifiedTopology: true,
