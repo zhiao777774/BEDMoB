@@ -37,7 +37,7 @@ export default class Dropdown extends Component {
     render() {
         return (
             <div className="relative inline-block text-left">
-                <span>{this.props.lable || '下拉式選單'}</span>
+                <span>{this.props.label || '下拉式選單'}</span>
                 <div className="inline-block ml-2">
                     <button type="button" className="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500" id="options-menu" aria-expanded={this.state.expanded ? 'true' : 'false'}
                         aria-haspopup="true" onClick={this._toggleMenu} onBlur={this._closeMenu}>
