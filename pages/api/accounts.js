@@ -26,7 +26,11 @@ handler.post(async (req, res) => {
         let balanceWei = web3.utils.fromWei(balance.toString(), 'ether').toString();
         balanceWei = parseFloat(balanceWei).toFixed(2);
 
-        req.session.set('user', { account, balance: balanceWei });
+        req.session.set('user', {
+            account,
+            balance: balanceWei,
+            publicKey: doc.publicKey || undefined
+        });
         await req.session.save();
         return res.status(201).end();
     }
@@ -43,16 +47,16 @@ handler.patch(async (req, res) => {
     const { condition, update } = req.body;
     const bias = '^vfbvbtadso!mpy';
     condition['account'] && (condition['account'] = md5(md5(condition['account'] + bias)));
-    update['publicKey'] && (update['publicKey'] = md5(md5(update['publicKey'] + bias)));
 
     await req.db.collection('account')
-        .updateOne(condition, { 
-            $set: update 
-        });
+        .updateOne(condition, { $set: update });
+
+    const origin = req.session.get('user');
+    await req.session.destroy('user');
 
     req.session.set('user', {
         publicKey: update.publicKey,
-        ...req.session.get('user')
+        ...origin
     });
     await req.session.save();
 
