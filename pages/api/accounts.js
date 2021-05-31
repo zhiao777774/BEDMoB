@@ -1,33 +1,42 @@
-import { withIronSession } from 'next-iron-session';
+import nextConnect from 'next-connect';
+import { ironSession } from 'next-iron-session';
+import md5 from 'md5';
 import cookieConfig from '@/constants/serverSideCookie';
+import MongoDB from '@/database';
+import { web3 } from '@/utils/factory.js';
 
 
-const VALID_ACCOUNTS = ['owner', 'consumer'];
-const VALID_PASSWORDS = ['owner', 'consumer'];
+const db = new MongoDB({ dbName: 'bepdpp' });
+const session = ironSession(cookieConfig);
+const handler = nextConnect();
 
-function _validate(account, password) {
-    const idx = VALID_ACCOUNTS.indexOf(account);
-    return idx !== -1 && VALID_PASSWORDS[idx] === password;
-}
+db.connect();
+handler.use(db.middleware).use(session);
 
-export default withIronSession(
-    async (req, res) => {
-        if (req.method === 'POST') {
-            const { account, password } = req.body;
+handler.post(async (req, res) => {
+    const { account, password } = req.body;
+    const bias = '^vfbvbtadso!mpy';
 
-            if (_validate(account, password)) {
-                req.session.set('user', { account });
-                await req.session.save();
-                return res.status(201).send('');
-            }
+    const doc = await req.db.collection('account').findOne({
+        account: md5(md5(account + bias))
+    });
 
-            return res.status(403).send('');
-        } else if (req.method === 'DELETE') {
-            await req.session.destroy('user');
-            return res.status(201).send('');
-        }
+    if (doc && md5(md5(password + bias)) === doc.password) {
+        const balance = await web3.eth.getBalance(account, 'latest');
+        let balanceWei = web3.utils.fromWei(balance.toString(), 'ether').toString();
+        balanceWei = parseFloat(balanceWei).toFixed(2);
+        
+        req.session.set('user', { account, balance: balanceWei });
+        await req.session.save();
+        return res.status(201).end();
+    }
 
-        return res.status(404).send('');
-    },
-    cookieConfig
-);
+    return res.status(403).end();
+});
+
+handler.delete(async (req, res) => {
+    await req.session.destroy('user');
+    return res.status(201).end();
+});
+
+export default handler;
