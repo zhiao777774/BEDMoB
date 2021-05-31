@@ -74,8 +74,8 @@ class Register extends Component {
         return (
             <Layout user={this.props.user}>
                 <div className="border-4 rounded-3xl mx-3 mr-8">
-                    <form className="px-8 pt-6 pb-8 w-1/2 m-center" onSubmit={this._insert}>
-                        <span className="block text-gray-700 font-bold mb-2 text-xl text-center">
+                    <form className="px-8 py-10 w-1/2 m-center" onSubmit={this._insert}>
+                        <span className="block text-gray-700 font-bold mb-2 text-2xl text-center">
                             新增資料集
                         </span>
                         <br />
@@ -99,7 +99,7 @@ class Register extends Component {
                                 required />
                         </div>
 
-                        <div className="mb-8">
+                        <div className="mb-12">
                             <label className="text-gray-700 font-bold mb-2">
                                 有限誤差與金額 (單位為Wei)
                             </label>
