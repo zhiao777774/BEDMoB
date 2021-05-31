@@ -3,7 +3,7 @@ module.exports = {
   purge: {
     mode: 'layers',
     layers: ['base', 'components', 'utilities'],
-    enabled: true,
+    enabled: false,
     content: ['./pages/**/*.{js,ts,jsx,tsx}', './components/**/*.{js,ts,jsx,tsx}']
   },
   theme: {
