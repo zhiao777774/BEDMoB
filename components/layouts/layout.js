@@ -3,7 +3,7 @@ import Navbar from '@/components/navbar';
 import PageTopButton from '@/components/pagetop';
 
 
-export default function Layout({ children, title = 'BEPDPP', user = undefined }) {
+export default function Layout({ children, title = 'BEDMoB', user = undefined }) {
     return (
         <div>
             <Head>
