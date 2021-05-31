@@ -42,4 +42,8 @@
     .position-center {
         @apply ml-auto mr-auto left-0 right-0 text-center;
     }
+
+    .vertical-center {
+        @apply flex flex-col justify-center items-center;
+    }
 }
