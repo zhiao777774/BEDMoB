@@ -22,6 +22,9 @@ export default class profile extends Component {
         if (!publicKey) {
             alert('請輸入公鑰');
             return;
+        } else if (publicKey.length !== 128) {
+            alert('公鑰長度必須為128 Bytes');
+            return;
         }
 
         this.setState({ disabled: true });
@@ -61,9 +64,9 @@ export default class profile extends Component {
 
         return (
             <Layout user={this.props.user}>
-                <div className="rounded-3xl flex flex-col justify-center items-center">
+                <div className="rounded-3xl vertical-center">
                     <div className="border-4 rounded-3xl w-2/3 bg-white">
-                        <form className="px-8 py-10 w-1/2 m-center" onSubmit={this._edit}>
+                        <form className="px-8 py-10 w-2/3 m-center" onSubmit={this._edit}>
                             <span className="block text-gray-700 font-bold mb-4 text-2xl text-center">
                                 個人資料
                             </span>
