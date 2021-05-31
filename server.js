@@ -15,6 +15,8 @@ app.prepare().then(() => {
 
     server.delete('*', (req, res) => handle(req, res));
 
+    server.patch('*', (req, res) => handle(req, res));
+
     server.listen(port, (err) => {
         if (err) throw err;
         console.log(`> Ready on http://localhost:${port}`);
