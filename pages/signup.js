@@ -36,7 +36,7 @@ export default class Signup extends Component {
         });
 
         if (res.ok) {
-            return Router.push('/');
+            return Router.push('/profile');
         } else {
             alert('註冊失敗，該錢包地址已被註冊!');
             this.setState({ disabled: false });
