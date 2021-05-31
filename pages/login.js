@@ -16,19 +16,6 @@ export default class Login extends Component {
         this._login = this._login.bind(this);
     }
 
-    _inputRestrictions(e) {
-        if (e.keyCode === 13 || e.which === 13)
-            e.preventDefault();
-
-        e = e.target;
-        if (!/^\w+$/.test(e.value)) {
-            e.value = /^\w+/.exec(e.value);
-        } else if (e.value.length > 12) {
-            e.value = e.value.substring(0, e.value.length - 1);
-        }
-        return false;
-    }
-
     async _login(event) {
         event.preventDefault(); // don't redirect the page
 
@@ -73,20 +60,20 @@ export default class Login extends Component {
                         <span className="text-gray-600 inline-block">沒有帳戶?</span>
                         <Link href="/signup"><a className="ml-2 text-blue-700 hover:underline">註冊</a></Link>
                     </div>
-                    <div className="group-modal inline-block">
+                    <div className="group-modal inline-block w-96 pt-3">
                         <div className="header">
                             <div className="title font-bold">登入</div>
                         </div>
-                        <div className="body">
+                        <div className="p-6">
                             <form onSubmit={this._login}>
                                 <div className="inline-flex items-center mb-6">
                                     <label className="text-gray-700 text-sm font-bold mb-1" htmlFor="input-account">帳號</label>
-                                    <input type="text" name="account" id="input-account" className="form-input shadow appearance-none border rounded ml-4 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="請輸入帳號" onKeyUp={this._inputRestrictions} />
+                                    <input type="text" name="account" id="input-account" className="form-input w-72 shadow appearance-none border rounded ml-4 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="請輸入帳號" />
                                     <small className="warning hidden">帳號或密碼錯誤</small>
                                 </div>
                                 <div className="inline-flex items-center mb-8">
                                     <label className="text-gray-700 text-sm font-bold mb-1" htmlFor="input-password">密碼</label>
-                                    <input type="password" name="password" id="input-password" className="form-input shadow appearance-none border rounded ml-4 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="請輸入密碼" onKeyUp={this._inputRestrictions} />
+                                    <input type="password" name="password" id="input-password" className="form-input w-72 shadow appearance-none border rounded ml-4 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="請輸入密碼" />
                                     <small className="warning hidden">帳號或密碼錯誤</small>
                                 </div>
                                 <div className="flex items-center justify-between">
