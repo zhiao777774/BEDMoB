@@ -25,7 +25,7 @@ handler.post(async (req, res) => {
         const balance = await web3.eth.getBalance(account, 'latest');
         let balanceWei = web3.utils.fromWei(balance.toString(), 'ether').toString();
         balanceWei = parseFloat(balanceWei).toFixed(2);
-        
+
         req.session.set('user', { account, balance: balanceWei });
         await req.session.save();
         return res.status(201).end();
@@ -36,6 +36,26 @@ handler.post(async (req, res) => {
 
 handler.delete(async (req, res) => {
     await req.session.destroy('user');
+    return res.status(201).end();
+});
+
+handler.patch(async (req, res) => {
+    const { condition, update } = req.body;
+    const bias = '^vfbvbtadso!mpy';
+    condition['account'] && (condition['account'] = md5(md5(condition['account'] + bias)));
+    update['publicKey'] && (update['publicKey'] = md5(md5(update['publicKey'] + bias)));
+
+    await req.db.collection('account')
+        .updateOne(condition, { 
+            $set: update 
+        });
+
+    req.session.set('user', {
+        publicKey: update.publicKey,
+        ...req.session.get('user')
+    });
+    await req.session.save();
+
     return res.status(201).end();
 });
 
