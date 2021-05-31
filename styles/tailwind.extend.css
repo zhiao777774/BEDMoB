@@ -35,6 +35,10 @@
         @apply bg-gray-500 hover:bg-gray-600 text-white;
     }
 
+    .btn-warning {
+        @apply bg-yellow-500 hover:bg-yellow-600 text-white;
+    }
+
     .position-center {
         @apply ml-auto mr-auto left-0 right-0 text-center;
     }
