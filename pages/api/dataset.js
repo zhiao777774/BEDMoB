@@ -2,8 +2,7 @@ import nextConnect from 'next-connect';
 import gas from '@/constants/contractMethodGas';
 import MongoDB from '@/database';
 import adapter from '@/api/database.adapter';
-import BIoTCM, { newContract } from '@/utils/factory';
-import Eth from 'ethjs';
+import BIoTCM, { web3 } from '@/utils/factory';
 
 
 const db = new MongoDB({ dbName: 'bepdpp' });
@@ -30,7 +29,7 @@ handler.post(async (req, res) => {
 
     await BIoTCM.methods.dataOwnerCreateContentProduct(
         description,
-        prices.map((price) => Eth.toWei(price, 'ether')),
+        prices.map((price) => web3.utils.toWei(String(price), 'ether')),
         boundedErrors
     ).send({ from: account, gas: gas.dataOwnerCreateContentProduct });
 
