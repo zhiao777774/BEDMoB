@@ -207,7 +207,7 @@ input[type='checkbox']:hover {
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 10;
+    z-index: 100;
     background-color: rgba(0, 0, 0, 0.75);
     text-align: center;
     vertical-align: middle;
@@ -222,8 +222,6 @@ input[type='checkbox']:hover {
 }
 
 div.group-modal {
-    width: 90%;
-    max-width: 350px;
     max-height: 450px;
     font-family: 'Noto Sans TC', '微軟正黑體', sans-serif;
     font-style: normal;
