@@ -18,9 +18,22 @@ import BIoTCM from '@/contracts/BIoTCM.json';
 // and we we'll export it from this file.
 // So, if we need excess to our deployed factory - We can import factory.js.
 // arguments: Our contract ABI, The address that we deployed our factory to
+/*
+// ethjs
 const instance = new web3.contract(
-    BIoTCM.abi
+    BIoTCM.abi,
+    BIoTCM.bytecode
 ).at(process.env.CONTRACT_ADDRESS || CONTRACT_ADDRESS);
+
+export default instance;
+export { web3 };
+*/
+
+// web3js
+const instance = new web3.eth.Contract(
+    BIoTCM.abi,
+    process.env.CONTRACT_ADDRESS || CONTRACT_ADDRESS
+);
 
 export default instance;
 export { web3 };
