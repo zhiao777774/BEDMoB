@@ -3,7 +3,7 @@ import Navbar from '@/components/navbar';
 import PageTopButton from '@/components/pagetop';
 
 
-export default function Layout({ children, title = 'BEPDPP' }) {
+export default function Layout({ children, title = 'BEPDPP', user = undefined }) {
     return (
         <div>
             <Head>
@@ -11,12 +11,11 @@ export default function Layout({ children, title = 'BEPDPP' }) {
                 <meta charSet="utf-8" />
                 <meta name="viewport" content="initial-scale=1.0, width=device-width" />
             </Head>
-            <Navbar />
-            <main id="page-top">
+            <Navbar user={user} />
+            <main id="page-top" className="p-7 pt-28">
                 {children}
             </main>
             <PageTopButton />
-            <Footer />
         </div>
     );
 }
