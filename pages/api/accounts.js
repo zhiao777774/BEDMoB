@@ -2,8 +2,9 @@ import nextConnect from 'next-connect';
 import { ironSession } from 'next-iron-session';
 import md5 from 'md5';
 import cookieConfig from '@/constants/serverSideCookie';
+import gas from '@/constants/contractMethodGas';
 import MongoDB from '@/database';
-import { web3 } from '@/utils/factory.js';
+import BIoTCM, { web3 } from '@/utils/factory.js';
 
 
 const db = new MongoDB({ dbName: 'bepdpp' });
@@ -45,20 +46,30 @@ handler.delete(async (req, res) => {
 
 handler.patch(async (req, res) => {
     const { condition, update } = req.body;
+
+    if (update.publicKey) {
+        await BIoTCM.methods.consumerRegisterProduct(update.publicKey)
+            .send({ from: condition.account, gas: gas.consumerRegisterProduct })
+            .catch((err) => {
+                console.error(err);
+                return res.status(403).end();
+            })
+
+        const origin = req.session.get('user');
+        await req.session.destroy('user');
+
+        req.session.set('user', {
+            publicKey: update.publicKey,
+            ...origin
+        });
+        await req.session.save();
+    }
+
     const bias = '^vfbvbtadso!mpy';
     condition['account'] && (condition['account'] = md5(md5(condition['account'] + bias)));
 
     await req.db.collection('account')
         .updateOne(condition, { $set: update });
-
-    const origin = req.session.get('user');
-    await req.session.destroy('user');
-
-    req.session.set('user', {
-        publicKey: update.publicKey,
-        ...origin
-    });
-    await req.session.save();
 
     return res.status(201).end();
 });
