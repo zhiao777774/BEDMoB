@@ -19,19 +19,22 @@ handler.get(adapter.GET(collection))
 handler.post(async (req, res) => {
     const { account, description, prices, boundedErrors } = req.body;
 
-    await req.db.collection(collection).insertOne({
-        owner: account,
-        description,
-        prices,
-        boundedErrors,
-        volume: 0
-    });
-
     await BIoTCM.methods.dataOwnerCreateContentProduct(
         description,
         prices.map((price) => web3.utils.toWei(String(price), 'ether')),
         boundedErrors
     ).send({ from: account, gas: gas.dataOwnerCreateContentProduct });
+
+    const productCount = await BIoTCM.methods.ContentProductCount().call();
+
+    await req.db.collection(collection).insertOne({
+        owner: account,
+        description,
+        prices,
+        boundedErrors,
+        volume: 0,
+        productCount: Number(productCount)
+    });
 
     return res.status(201).end();
 });
