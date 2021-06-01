@@ -1,10 +1,11 @@
 import { Component } from 'react';
+import Router from 'next/router';
 import { withIronSession } from 'next-iron-session';
 import Layout from '@/layouts/layout';
 import cookieConfig from '@/constants/serverSideCookie';
 
 
-export default class profile extends Component {
+export default class Profile extends Component {
     constructor(props) {
         super(props);
 
@@ -45,6 +46,8 @@ export default class profile extends Component {
                 disabled: false,
                 editMode: false
             });
+            
+            Router.reload();
         } else {
             alert('更改失敗，請稍後再試!');
             this.setState({ disabled: false });
@@ -53,7 +56,7 @@ export default class profile extends Component {
 
     componentDidMount() {
         if (!this.props.user.publicKey) {
-            alert('請先設定公鑰!');
+            alert('請完成公鑰的設定');
         }
     }
 
@@ -94,7 +97,7 @@ export default class profile extends Component {
                                     公鑰
                                 </label>
                                 {
-                                    !editMode ?
+                                    !editMode && !this.props.user.publicKey ?
                                         <button type="button" className="ml-4 mb-2 btn btn-sm btn-danger"
                                             onClick={() => this.setState({ editMode: true })}>
                                             編輯
@@ -108,7 +111,7 @@ export default class profile extends Component {
                             </div>
 
                             {
-                                editMode ?
+                                editMode && !this.props.user.publicKey ?
                                     <div className="flex items-center justify-center">
                                         <button type="submit" className={'btn btn-lg ' + (disabled ? 'bg-gray-300 cursor-not-allowed' : 'btn-success')}>
                                             變更
