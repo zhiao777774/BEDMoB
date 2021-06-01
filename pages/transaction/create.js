@@ -38,7 +38,7 @@ class Register extends Component {
             alert('金額不可為0');
             return;
         }
-        
+
         if (confirm('確定新增?')) {
             this.setState({ disabled: true });
             const res = await fetch('/api/dataset', {
@@ -66,6 +66,13 @@ class Register extends Component {
         }
     };
 
+    componentDidMount() {
+        if (!this.props.user.publicKey) {
+            alert('請先完成公鑰設定');
+            this.props.router.push('/profile');
+        }
+    }
+
     render() {
         const { combinationSize, disabled } = this.state;
         const fieldStyle = 'shadow appearance-none border rounded w-full py-2 px-3 ' +
@@ -92,7 +99,7 @@ class Register extends Component {
                                 描述 (最多20個字)
                             </label>
                             <button type="button" className="ml-4 mb-2 btn btn-sm btn-warning" onClick={() => this.setState({ description: '' })}>清空</button>
-                            <input id="description" name="description" className={fieldStyle} type="text" 
+                            <input id="description" name="description" className={fieldStyle} type="text"
                                 maxLength={20} value={this.state.description ?? this.initialData.description}
                                 onChange={({ target }) => this.setState({ description: target.value })}
                                 onKeyUp={({ target }) => target.value = target.value.slice(0, 500)}
@@ -112,7 +119,13 @@ class Register extends Component {
                                 重置
                             </button>
                             <button type="button" className="ml-6 mb-2 btn btn-sm btn-warning"
-                                onClick={() => this.setState({ combinationSize: combinationSize + 1 })}>
+                                onClick={() => {
+                                    if (combinationSize === 3) {
+                                        alert('最多三種金額');
+                                        return;
+                                    } 
+                                    this.setState({ combinationSize: combinationSize + 1 });
+                                }}>
                                 新增欄位
                             </button>
                             {
@@ -149,10 +162,10 @@ class Register extends Component {
                                                     }
 
                                                     const { prices, boundedErrors } = this.state;
-                                                    this.setState({ 
+                                                    this.setState({
                                                         prices: prices.filter((_, idx) => idx !== n),
                                                         boundedErrors: boundedErrors.filter((_, idx) => idx !== n),
-                                                        combinationSize: combinationSize - 1 
+                                                        combinationSize: combinationSize - 1
                                                     });
                                                 }}>
                                                 刪除欄位
