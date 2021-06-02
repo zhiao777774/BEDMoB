@@ -142,7 +142,7 @@ class Index extends Component {
         data.sort((item1, item2) => {
             switch (orderby) {
                 case '#':
-                    return (item1._id - item2._id) * (asc ? 1 : -1);
+                    return (item1.productCount - item2.productCount) * (asc ? 1 : -1);
                 case '描述':
                     const [n1, n2] = [item1.description.toUpperCase(), item2.description.toUpperCase()];
                     return (n1 < n2 ? -1 : 1) * (asc ? 1 : -1);
@@ -159,7 +159,7 @@ class Index extends Component {
         });
 
         return (
-            <Layout user={this.props.user}>
+            <Layout user={this.props.user} selectedIdx={0}>
                 <div className="p-20">
                     <div className="mb-6 font-bold text-sm relative">
                         <button className="group absolute -bottom-2 left-3 btn btn-sm pt-2 bg-gray-200 hover:bg-gray-300">
@@ -221,10 +221,10 @@ class Index extends Component {
                         <tbody className="font-bold text-sm">
                             {
                                 data.map(((datasetInfo) => {
-                                    const { _id, owner, description, prices, volume } = datasetInfo;
+                                    const { _id, productCount, owner, description, prices, volume } = datasetInfo;
 
                                     return (
-                                        <tr key={`${owner}-${_id}`} className="hover:bg-gray-50 border-b text-right">
+                                        <tr key={_id} className="hover:bg-gray-50 border-b text-right">
                                             <td className="p-3 pl-9 text-gray-400 text-left">
                                                 <FontAwesomeIcon icon={watchList.includes(_id) ? faSolidStar : faHollowStar}
                                                     size="sm" className={'cursor-pointer ' + (watchList.includes(_id) ? 'text-yellow-400' : 'hover:text-yellow-400')}
@@ -232,7 +232,7 @@ class Index extends Component {
                                             </td>
                                             <td className="p-3 whitespace-no-wrap text-left">
                                                 <div className="flex items-center">
-                                                    <div className="leading-5 text-gray-800">{_id}</div>
+                                                    <div className="leading-5 text-gray-800">{productCount}</div>
                                                 </div>
                                             </td>
                                             <td className="p-3 whitespace-no-wrap leading-5">
@@ -241,7 +241,7 @@ class Index extends Component {
                                                         description.substring(0, 10) + '...' : description
                                                 }
                                             </td>
-                                            <td className="p-3 whitespace-no-wrap leading-5">{prices[0]}Wei</td>
+                                            <td className="p-3 whitespace-no-wrap leading-5">{prices[0] } Wei {prices.length > 1 ? '...' : ''}</td>
                                             <td className="p-3 whitespace-no-wrap leading-5 text-center">
                                                 <span className="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
                                                     <span aria-hidden className="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
@@ -294,10 +294,11 @@ class Index extends Component {
                     </div>
                 </div>
                 <Blocker display={openPanel} style={{ backgroundColor: 'rgba(0, 0, 0, .2)' }}>
-                    <div className="vertical-center h-full absolute position-center z-60 top-0 flex justify-center" onClick={(e) => e.stopPropagation()}>
+                    <div className="vertical-center h-full absolute position-center text-left z-60 top-0 flex justify-center" onClick={(e) => e.stopPropagation()}>
                         {
                             openPanel ?
-                                <Wallet data={{ ...datasetInfo, consumer: this.props.user.account }} />
+                                <Wallet data={{ ...datasetInfo, consumer: this.props.user.account }}
+                                    closeEvent={() => { this.setState({ openPanel: false }) }} />
                                 : null
                         }
                     </div>
