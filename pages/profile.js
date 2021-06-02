@@ -23,9 +23,6 @@ export default class Profile extends Component {
         if (!publicKey) {
             alert('請輸入公鑰');
             return;
-        } else if (publicKey.length !== 128) {
-            alert('公鑰長度必須為128 Bytes');
-            return;
         }
 
         this.setState({ disabled: true });
