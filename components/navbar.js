@@ -26,7 +26,7 @@ export default class Navbar extends Component {
 
     _activateSelected(target = 0) {
         return this.props.selectedIdx == target ?
-            'bg-gray-900 text-white' : 'text-gray-700 hover:bg-indigo-400 hover:text-white';
+            'bg-indigo-400 text-white' : 'text-gray-700 hover:text-blue-800';
     }
 
     _loginChecked() {
