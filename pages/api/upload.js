@@ -1,4 +1,5 @@
 import nextConnect from 'next-connect';
+import md5 from 'md5';
 import { ObjectId } from 'mongodb';
 import gas from '@/constants/contractMethodGas';
 import { upload } from '@/api/ipfsAPI/ipfsAPI';
@@ -17,7 +18,12 @@ const collection = 'transaction';
 handler.post(async (req, res) => {
     const { _id, data } = req.body;
     const { file, productCount, consumer, owner } = data;
-    const ipfsRes = await upload(file);
+
+    const bias = '^vfbvbtadso!mpy';
+    const doc = await req.db.collection('account').findOne({
+        account: md5(md5(consumer + bias))
+    });
+    const ipfsRes = await upload(file, doc.publicKey);
 
     await BIoTCM.methods.sendProductContent(
         productCount, ipfsRes.hash, consumer
@@ -28,7 +34,18 @@ handler.post(async (req, res) => {
             $set: {
                 datasetHash: ipfsRes.hash,
                 datasetPath: ipfsRes.path,
+                privateKey: ipfsRes.privateKey || '',
                 state: 'done'
+            }
+        });
+
+    const doc = await req.db.collection('dataset')
+        .findOne({ productCount });
+        
+    req.db.collection('dataset')
+        .updateOne({ productCount }, {
+            $set: {
+                volume: doc.volume + 1
             }
         });
 
