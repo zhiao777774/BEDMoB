@@ -35,18 +35,4 @@ handler.post(async (req, res) => {
     return res.status(201).end();
 });
 
-
-handler.delete(async (req, res) => {
-    const { condition } = req.body;
-    const col = req.db.collection(collection);
-
-    col.deleteOne(condition, (err, res) => {
-        if (err) throw err;
-        console.log(`has one document deleted on ${collection}`);
-    });
-    await req.session.destroy('user');
-
-    return res.status(201).end();
-});
-
 export default handler;
