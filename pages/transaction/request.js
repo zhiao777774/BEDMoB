@@ -166,7 +166,7 @@ export default class Requester extends Component {
         });
     };
 
-    _queryProductHash = async (productCount, consumer, privateKey) => {
+    _queryProductHash = async (productCount, consumer) => {
         const metaMaskAccounts = await web3.eth.getAccounts();
         if (metaMaskAccounts.length && metaMaskAccounts[0] !== consumer) {
             alert('請先將 MetaMask 切換至您的帳戶： ' + consumer);
@@ -177,7 +177,7 @@ export default class Requester extends Component {
             .send({ from: consumer, gas: gas.queryProductContent })
             .then((queryRes) => {
                 const fileHash = queryRes.events.ProductContentQuery.returnValues.fileHash;
-                alert(`資料集Hash值：\r\n${fileHash}\r\n\r\n資料集下載私鑰：\r\n${privateKey}`);
+                alert(`資料集Hash值：\r\n${fileHash}`);
             })
             .catch(() => {
                 alert('資料集查詢已取消');
@@ -301,7 +301,7 @@ export default class Requester extends Component {
                         <tbody className="font-bold text-sm">
                             {
                                 data.map((({ _id, productCount, description, price, boundedError, owner, consumer,
-                                    state = 'request', datasetHash = undefined, datasetPath = undefined, privateKey = undefined }) => {
+                                    state = 'request', datasetHash = undefined, datasetPath = undefined }) => {
                                     return (
                                         <tr key={_id} className="hover:bg-gray-50 border-b text-right">
                                             <td className="p-3 whitespace-no-wrap text-left pl-9">
@@ -360,7 +360,7 @@ export default class Requester extends Component {
                                                             <button className={'btn ' + (state === 'done' ? 'btn-success' : 'bg-red-500 text-white cursor-default')}
                                                                 onClick={
                                                                     state === 'done' ?
-                                                                        () => this._queryProductHash(productCount, consumer, privateKey)
+                                                                        () => this._queryProductHash(productCount, consumer)
                                                                         : null
                                                                 }>
                                                                 {state === 'done' ? '交易已完成' : '資料集請求中'}
