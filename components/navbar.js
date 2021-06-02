@@ -92,12 +92,12 @@ export default class Navbar extends Component {
                                         </a>
                                     </Link>
                                     <Link prefetch href="/transaction/create">
-                                        <a className={this._activateSelected(1) + basicLinkStyle + (this._loginChecked() ? 'block' : 'hidden')}>
+                                        <a className={this._activateSelected(2) + basicLinkStyle + (this._loginChecked() ? 'block' : 'hidden')}>
                                             資料集登記
                                         </a>
                                     </Link>
                                     <Link prefetch href="/profile">
-                                        <a className={this._activateSelected(2) + basicLinkStyle + (this._loginChecked() ? 'block' : 'hidden')}>
+                                        <a className={this._activateSelected(3) + basicLinkStyle + (this._loginChecked() ? 'block' : 'hidden')}>
                                             個人資料
                                         </a>
                                     </Link>
