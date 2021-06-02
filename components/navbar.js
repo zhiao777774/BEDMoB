@@ -62,11 +62,6 @@ export default class Navbar extends Component {
                 <nav className="bg-white pb-2 border-b">
                     <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
                         <div className="relative flex items-center justify-between h-16">
-                            <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
-                                <button type="button" className="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" aria-controls="mobile-menu" aria-expanded="false">
-                                    <span className="sr-only">開啟選單</span>
-                                </button>
-                            </div>
                             <div className="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
                                 <div className="flex-shrink-0 flex items-center -ml-20 relative -top-1">
                                     <Link prefetch href="/">
@@ -91,6 +86,11 @@ export default class Navbar extends Component {
                             <div className="hidden mt-2 sm:block sm:ml-6 relative sm:-right-16">
                                 <div className="flex space-x-4 last:ml-20" style={{ font: '400 13.3333px Arial' }}>
                                     <Link prefetch href="/"><a className={this._activateSelected(0) + basicLinkStyle}>主頁</a></Link>
+                                    <Link prefetch href="/transaction/request">
+                                        <a className={this._activateSelected(1) + basicLinkStyle + (this._loginChecked() ? 'block' : 'hidden')}>
+                                            資料集請求
+                                        </a>
+                                    </Link>
                                     <Link prefetch href="/transaction/create">
                                         <a className={this._activateSelected(1) + basicLinkStyle + (this._loginChecked() ? 'block' : 'hidden')}>
                                             資料集登記
