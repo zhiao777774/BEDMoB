@@ -31,7 +31,10 @@ export default class Profile extends Component {
         this.setState({ disabled: true });
         const res = await fetch('/api/accounts', {
             method: 'PATCH',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                'Content-Type': 'application/json',
+                'cache-control': 'no-store, max-age=0'
+            },
             body: JSON.stringify({
                 condition: {
                     account: this.props.user.account
@@ -46,7 +49,7 @@ export default class Profile extends Component {
                 disabled: false,
                 editMode: false
             });
-            
+
             Router.reload();
         } else {
             alert('更改失敗，請稍後再試!');
