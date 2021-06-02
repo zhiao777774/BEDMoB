@@ -79,7 +79,7 @@ class Register extends Component {
             'text-gray-700 leading-tight focus:outline-none focus:shadow-outline';
 
         return (
-            <Layout user={this.props.user}>
+            <Layout user={this.props.user} selectedIdx={2}>
                 <div className="border-4 rounded-3xl mx-3 mr-8">
                     <form className="px-8 py-10 w-1/2 m-center" onSubmit={this._insert}>
                         <span className="block text-gray-700 font-bold mb-2 text-2xl text-center">
