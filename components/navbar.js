@@ -26,7 +26,7 @@ export default class Navbar extends Component {
 
     _activateSelected(target = 0) {
         return this.props.selectedIdx == target ?
-            'bg-indigo-400 text-white' : 'text-gray-700 hover:text-blue-800';
+            'bg-indigo-500 text-white' : 'text-gray-700 hover:text-blue-800';
     }
 
     _loginChecked() {
@@ -103,7 +103,7 @@ export default class Navbar extends Component {
                                     </Link>
                                     <Link prefetch href="/login"><a className={this._activateSelected(-1) + basicLinkStyle + (this._loginChecked() ? 'hidden' : 'block')}>登入</a></Link>
                                     <Link prefetch href="/logout"><a className={this._activateSelected(-1) + basicLinkStyle + (this._loginChecked() ? 'block' : 'hidden')}>登出</a></Link>
-                                    <Link prefetch href="/signup"><a className={basicLinkStyle + (this._loginChecked() ? 'hidden' : 'block') + ' bg-blue-600 text-white hover:bg-blue-500'}>註冊</a></Link>
+                                    <Link prefetch href="/signup"><a className={basicLinkStyle + (this._loginChecked() ? 'hidden' : 'block') + ' bg-green-600 hover:bg-green-500 text-white'}>註冊</a></Link>
                                     <span className={`${basicLinkStyle} ${this._loginChecked() ? 'block' : 'hidden'}`}>|</span>
                                     {
                                         /*
