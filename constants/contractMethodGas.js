@@ -3,5 +3,5 @@ export default {
     consumerRegisterProduct: 148694,
     purchaseProductContent: 75793,
     sendProductContent: 86491,
-    queryProductContent: 28018
+    queryProductContent: 28062
 };
