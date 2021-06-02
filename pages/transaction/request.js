@@ -5,6 +5,8 @@ import { withIronSession } from 'next-iron-session';
 import Layout from '@/layouts/layout';
 import Dropdown from '@/components/dropdown';
 import cookieConfig from '@/constants/serverSideCookie';
+import gas from '@/constants/contractMethodGas';
+import BIoTCM, { web3 } from '@/utils/factory.js';
 import { numberRange } from '@/utils/range';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSortUp, faSortDown, faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
@@ -164,6 +166,25 @@ export default class Requester extends Component {
         });
     };
 
+    _queryProductHash = async (productCount, consumer, privateKey) => {
+        const metaMaskAccounts = await web3.eth.getAccounts();
+        if (metaMaskAccounts.length && metaMaskAccounts[0] !== consumer) {
+            alert('請先將 MetaMask 切換至您的帳戶： ' + consumer);
+            return;
+        }
+
+        BIoTCM.methods.queryProductContent(productCount)
+            .send({ from: consumer, gas: gas.queryProductContent })
+            .then((queryRes) => {
+                const fileHash = queryRes.events.ProductContentQuery.returnValues.fileHash;
+                alert(`資料集Hash值：\r\n${fileHash}\r\n\r\n資料集下載私鑰：\r\n${privateKey}`);
+            })
+            .catch(() => {
+                alert('資料集查詢已取消');
+                return;
+            });
+    };
+
     _getArrayBuffer = (file) => {
         return new Promise((resolve, reject) => {
             const reader = new FileReader();
@@ -193,9 +214,12 @@ export default class Requester extends Component {
                     return (item1.price - item2.price) * (asc ? 1 : -1);
                 case '資料有限誤差':
                     return (item1.boundedError - item2.boundedError) * (asc ? 1 : -1);
-                case '購買者':
+                case '資料集購買者':
                     const [c1, c2] = [item1.consumer.toUpperCase(), item2.consumer.toUpperCase()];
                     return (c1 < c2 ? -1 : 1) * (asc ? 1 : -1);
+                case '資料集擁有者':
+                    const [o1, o2] = [item1.owner.toUpperCase(), item2.owner.toUpperCase()];
+                    return (o1 < o2 ? -1 : 1) * (asc ? 1 : -1);
                 default:
                     break;
             }
@@ -247,14 +271,30 @@ export default class Requester extends Component {
                                             null
                                     }
                                 </th>
-                                <th className="sticky top-18 bg-indigo-50 z-40 p-3 text-center leading-4 cursor-pointer" d-val="購買者" onClick={this._sort}>
-                                    購買者
+                                {
+                                    display === 'owner' ?
+                                        <th className="sticky top-18 bg-indigo-50 z-40 p-3 text-center leading-4 cursor-pointer" d-val="資料集購買者" onClick={this._sort}>
+                                            資料集購買者
                                         {
-                                        orderby === '購買者' ?
-                                            <FontAwesomeIcon icon={asc ? faSortUp : faSortDown} size="lg" className={'ml-1 ' + (asc ? 'pt-1' : 'pb-1')} /> :
-                                            null
-                                    }
-                                </th>
+                                                orderby === '資料集購買者' ?
+                                                    <FontAwesomeIcon icon={asc ? faSortUp : faSortDown} size="lg" className={'ml-1 ' + (asc ? 'pt-1' : 'pb-1')} /> :
+                                                    null
+                                            }
+                                        </th>
+                                        : null
+                                }
+                                {
+                                    display === 'consumer' ?
+                                        <th className="sticky top-18 bg-indigo-50 z-40 p-3 text-center leading-4 cursor-pointer" d-val="資料集擁有者" onClick={this._sort}>
+                                            資料集擁有者
+                                        {
+                                                orderby === '資料集擁有者' ?
+                                                    <FontAwesomeIcon icon={asc ? faSortUp : faSortDown} size="lg" className={'ml-1 ' + (asc ? 'pt-1' : 'pb-1')} /> :
+                                                    null
+                                            }
+                                        </th>
+                                        : null
+                                }
                                 <th className="sticky top-18 bg-indigo-50 z-40 p-3 pr-9"></th>
                             </tr>
                         </thead>
@@ -280,7 +320,9 @@ export default class Requester extends Component {
                                             <td className="p-3 whitespace-no-wrap leading-5 text-center">
                                                 <span className="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
                                                     <span aria-hidden className="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
-                                                    <span className="relative text-xs">{consumer}</span>
+                                                    <span className="relative text-xs">
+                                                        {display === 'owner' ? consumer : owner}
+                                                    </span>
                                                 </span>
                                             </td>
                                             <td className="p-3 pr-9 whitespace-no-wrap border-b leading-5">
@@ -316,10 +358,12 @@ export default class Requester extends Component {
                                                                     : null
                                                             }
                                                             <button className={'btn ' + (state === 'done' ? 'btn-success' : 'bg-red-500 text-white cursor-default')}
-                                                                onClick={state === 'done' ? () => {
-                                                                    alert(`資料集Hash值：\r\n${datasetHash}\r\n\r\n資料集下載私鑰：\r\n${privateKey}`);
-                                                                } : null}>
-                                                                {state === 'done' ? '交易完成' : '資料集請求中'}
+                                                                onClick={
+                                                                    state === 'done' ?
+                                                                        () => this._queryProductHash(productCount, consumer, privateKey)
+                                                                        : null
+                                                                }>
+                                                                {state === 'done' ? '交易已完成' : '資料集請求中'}
                                                             </button>
                                                         </div>
                                                 }
