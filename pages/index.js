@@ -29,7 +29,7 @@ class Index extends Component {
             selected: 100,
             orderby: '#',
             asc: true,
-            watchList: [],
+            watchList: this.props.watchList,
             openPanel: false,
             datasetInfo: undefined
         };
@@ -108,6 +108,17 @@ class Index extends Component {
             newWatchList.push(code);
 
         this.setState({ watchList: newWatchList });
+
+        fetch('/api/collect', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                condition: {
+                    account: this.props.user.account
+                },
+                update: { watchList: newWatchList }
+            })
+        });
     };
 
     _buy = ({ target }) => {
@@ -241,7 +252,7 @@ class Index extends Component {
                                                         description.substring(0, 10) + '...' : description
                                                 }
                                             </td>
-                                            <td className="p-3 whitespace-no-wrap leading-5">{prices[0] } Wei {prices.length > 1 ? '...' : ''}</td>
+                                            <td className="p-3 whitespace-no-wrap leading-5">{prices[0]} Wei {prices.length > 1 ? '...' : ''}</td>
                                             <td className="p-3 whitespace-no-wrap leading-5 text-center">
                                                 <span className="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
                                                     <span aria-hidden className="absolute inset-0 bg-green-200 opacity-50 rounded-full"></span>
@@ -312,15 +323,20 @@ export default withRouter(Index);
 
 export const getServerSideProps = withIronSession(
     async ({ req, res }) => {
+        const user = req.session.get('user');
+
         const protocol = req.headers['x-forwarded-proto'] || 'http';
         const baseUrl = req ? `${protocol}://${req.headers.host}` : '';
-        const datasetRes = await fetch(baseUrl + '/api/dataset');
-        const dataset = await datasetRes.json();
+
+        const [dataset, watchList] = await Promise.all(
+            ['/api/dataset', `/api/collect?account=${(user && user.account) || 'undefined'}`]
+                .map(url => fetch(baseUrl + url).then(res => res.json())));
 
         return {
             props: {
-                user: req.session.get('user') || 'undefined',
-                dataset
+                user: user || 'undefined',
+                dataset,
+                watchList
             }
         };
     },
