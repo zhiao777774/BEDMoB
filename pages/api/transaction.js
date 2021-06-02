@@ -15,8 +15,22 @@ handler.use(db.middleware).use(session);
 
 const collection = 'transaction';
 
-handler.get(adapter.GET(collection))
-    .delete(adapter.DELETE(collection));
+handler.delete(adapter.DELETE(collection));
+
+handler.get(async (req, res) => {
+    const { account } = req.query;
+    const resultData = {};
+
+    resultData['owner'] = await req.db.collection(collection).find({
+        owner: account
+    }).toArray();
+
+    resultData['consumer'] = await req.db.collection(collection).find({
+        consumer: account
+    }).toArray();
+
+    res.json(resultData);
+});
 
 handler.post(async (req, res) => {
     await req.db.collection(collection).insertOne(req.body);
