@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Link from 'next/link';
 import Router from 'next/router';
 import { withIronSession } from 'next-iron-session';
 import Layout from '@/layouts/layout';
@@ -398,7 +397,7 @@ export default class Requester extends Component {
                             <FontAwesomeIcon icon={faChevronRight} size='lg' className="text-gray-700 ml-2 cursor-pointer" style={{ display: pageable ? '' : 'none' }} d-event="next" onClick={pageable ? this._switchPage : undefined} />
                         </span>
                         <span className="absolute -top-1.5 right-3">
-                            <Dropdown lable="每頁顯示" items={pageSizes}
+                            <Dropdown label="每頁顯示" items={pageSizes}
                                 selectedIndex={pageSizes.indexOf(selected)}
                                 onSelected={this._setSelected} ref={this.dropdownRef} />
                         </span>
