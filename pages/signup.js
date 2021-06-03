@@ -47,16 +47,16 @@ export default class Signup extends Component {
         const { disabled } = this.state;
 
         return (
-            <div className="h-screen grid grid-rows-1 grid-cols-3 grid-flow-col bg-purple-50">
-                <div className="place-self-center col-span-2 row-span-1">
+            <div className="h-screen grid grid-rows-1 grid-flow-col bg-purple-50">
+                <div className="place-self-center row-span-1">
                     <div className="ml-6 font-bold absolute top-3 left-1">
                         <Link prefetch href="/">
                             <a className="text-3xl cursor-pointer font-oswald">
-                                <span className="relative ml-3 top-0.5">BEPDPP</span>
+                                <span className="relative ml-3 top-0.5">BEDMoB</span>
                             </a>
                         </Link>
                     </div>
-                    <div className="ml-12 font-bold absolute top-4 left-11/20">
+                    <div className="ml-12 font-bold absolute top-4  right-10">
                         <span className="text-gray-600 inline-block">已經有帳戶?</span>
                         <Link href="/login"><a className="ml-2 text-blue-700 hover:underline">登入</a></Link>
                     </div>
@@ -82,8 +82,6 @@ export default class Signup extends Component {
                             </form>
                         </div>
                     </div>
-                </div>
-                <div className="border-l-2">
                 </div>
             </div>
         );
