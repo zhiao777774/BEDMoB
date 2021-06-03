@@ -106,9 +106,10 @@ export default class Navbar extends Component {
                                             個人資料
                                         </a>
                                     </Link>
+                                    <span className={`${basicLinkStyle} ${this._loginChecked() ? 'hidden' : 'block'}`}>|</span>
                                     <Link prefetch href="/login"><a className={this._activateSelected(-1) + basicLinkStyle + (this._loginChecked() ? 'hidden' : 'block')}>登入</a></Link>
                                     <Link prefetch href="/logout"><a className={this._activateSelected(-1) + basicLinkStyle + (this._loginChecked() ? 'block' : 'hidden')}>登出</a></Link>
-                                    <Link prefetch href="/signup"><a className={basicLinkStyle + (this._loginChecked() ? 'hidden' : 'block') + ' bg-green-600 hover:bg-green-500 text-white'}>註冊</a></Link>
+                                    <Link prefetch href="/signup"><a className={this._activateSelected(-1) + basicLinkStyle + (this._loginChecked() ? 'hidden' : 'block')}>註冊</a></Link>
                                     <span className={`${basicLinkStyle} ${this._loginChecked() ? 'block' : 'hidden'}`}>|</span>
                                     {
                                         /*
