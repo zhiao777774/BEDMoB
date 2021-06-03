@@ -176,7 +176,12 @@ export default class Requester extends Component {
             .send({ from: consumer, gas: gas.queryProductContent })
             .then((queryRes) => {
                 const fileHash = queryRes.events.ProductContentQuery.returnValues.fileHash;
-                alert(`資料集Hash值：\r\n${fileHash}`);
+                const datasetPath = `https://ipfs.infura.io/ipfs/${fileHash}`;
+                alert(`資料集Hash值：\r\n${fileHash}\r\n\r\n資料集位址：\r\n${datasetPath}`);
+
+                if (confirm('前往資料集下載位址嗎?')) {
+                    window.open(datasetPath, '_blank');
+                }
             })
             .catch(() => {
                 alert('資料集查詢已取消');
@@ -347,15 +352,6 @@ export default class Requester extends Component {
                                                         )
                                                         :
                                                         <div>
-                                                            {
-                                                                state === 'done' ?
-                                                                    <button className="btn btn-primary mr-3">
-                                                                        <Link href={datasetPath} prefetch={false}>
-                                                                            <a target="_blank">資料集下載</a>
-                                                                        </Link>
-                                                                    </button>
-                                                                    : null
-                                                            }
                                                             <button className={'btn ' + (state === 'done' ? 'btn-success' : 'bg-red-500 text-white cursor-default')}
                                                                 onClick={
                                                                     state === 'done' ?
