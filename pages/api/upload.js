@@ -17,13 +17,13 @@ const collection = 'transaction';
 
 handler.post(async (req, res) => {
     const { _id, data } = req.body;
-    const { file, productCount, consumer, owner } = data;
+    const { content, productCount, consumer, owner } = data;
 
     const bias = '^vfbvbtadso!mpy';
-    const doc = await req.db.collection('account').findOne({
+    const accountDoc = await req.db.collection('account').findOne({
         account: md5(md5(consumer + bias))
     });
-    const ipfsRes = await upload(file, doc.publicKey);
+    const ipfsRes = await upload(content, accountDoc.publicKey);
 
     await BIoTCM.methods.sendProductContent(
         productCount, ipfsRes.hash, consumer
@@ -34,7 +34,6 @@ handler.post(async (req, res) => {
             $set: {
                 datasetHash: ipfsRes.hash,
                 datasetPath: ipfsRes.path,
-                privateKey: ipfsRes.privateKey || '',
                 state: 'done'
             }
         });
