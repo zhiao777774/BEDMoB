@@ -95,7 +95,9 @@ class Index extends Component {
 
     _collect = ({ target }) => {
         if (this.props.user === 'undefined') {
+            alert('請先登入');
             this.props.router.push('/login');
+            return;
         }
 
         const code = target.getAttribute('d-code') ||
@@ -173,14 +175,18 @@ class Index extends Component {
             <Layout user={this.props.user} selectedIdx={0}>
                 <div className="p-20">
                     <div className="mb-6 font-bold text-sm relative">
-                        <button className="group absolute -bottom-2 left-3 btn btn-sm pt-2 bg-gray-200 hover:bg-gray-300">
-                            <Link href="/watchlist">
-                                <a>
-                                    <FontAwesomeIcon icon={faHollowStar} size="sm" className="relative -top-0.5 text-gray-500 group-hover:text-black" />
-                                    <span className="ml-2 relative -top-0.5">關注列表</span>
-                                </a>
-                            </Link>
-                        </button>
+                        {
+                            this.props.user !== 'undefined' ?
+                                <button className="group absolute -bottom-2 left-3 btn btn-sm pt-2 bg-gray-200 hover:bg-gray-300">
+                                    <Link href="/watchlist">
+                                        <a>
+                                            <FontAwesomeIcon icon={faHollowStar} size="sm" className="relative -top-0.5 text-gray-500 group-hover:text-black" />
+                                            <span className="ml-2 relative -top-0.5">關注列表</span>
+                                        </a>
+                                    </Link>
+                                </button>
+                                : null
+                        }
                     </div>
                     <table className="min-w-full border border-l-0 border-r-0 border-gray-300 bg-white relative">
                         <thead>
