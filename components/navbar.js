@@ -96,8 +96,13 @@ export default class Navbar extends Component {
                                             資料集登記
                                         </a>
                                     </Link>
-                                    <Link prefetch href="/profile">
+                                    <Link prefetch href="/decrypt">
                                         <a className={this._activateSelected(3) + basicLinkStyle + (this._loginChecked() ? 'block' : 'hidden')}>
+                                            資料集解碼
+                                        </a>
+                                    </Link>
+                                    <Link prefetch href="/profile">
+                                        <a className={this._activateSelected(4) + basicLinkStyle + (this._loginChecked() ? 'block' : 'hidden')}>
                                             個人資料
                                         </a>
                                     </Link>
