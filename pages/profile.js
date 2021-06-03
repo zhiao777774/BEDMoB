@@ -66,7 +66,7 @@ export default class Profile extends Component {
             'text-gray-700 leading-tight focus:outline-none focus:shadow-outline';
 
         return (
-            <Layout user={this.props.user} selectedIdx={3}>
+            <Layout user={this.props.user} selectedIdx={4}>
                 <div className="rounded-3xl vertical-center">
                     <div className="border-4 rounded-3xl w-2/3 bg-white">
                         <form className="px-8 py-10 w-2/3 m-center" onSubmit={this._edit}>
