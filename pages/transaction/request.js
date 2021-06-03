@@ -112,14 +112,14 @@ export default class Requester extends Component {
     _handleFileUpload = async ({ target }) => {
         const id = target.getAttribute('d-id');
         const tData = JSON.parse(target.getAttribute('d-data'));
-        const file = await this._getArrayBuffer(target.files[0]);
+        const content = await this._getFileContent(target.files[0]);
 
         this.setState({
             file: {
                 ...this.state.file,
                 [id]: {
                     ...tData,
-                    file
+                    content
                 }
             }
         });
@@ -141,7 +141,6 @@ export default class Requester extends Component {
             }
         });
 
-        data.file = Array.from(new Uint8Array(data.file));
         const res = await fetch('/api/upload', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -153,7 +152,7 @@ export default class Requester extends Component {
 
         if (res.ok) {
             alert('資料集傳送成功');
-            // Router.reload();
+            Router.reload();
         } else {
             alert('資料集傳送失敗');
         }
@@ -185,13 +184,13 @@ export default class Requester extends Component {
             });
     };
 
-    _getArrayBuffer = (file) => {
+    _getFileContent = (file) => {
         return new Promise((resolve, reject) => {
             const reader = new FileReader();
             reader.addEventListener('load', () => {
                 resolve(reader.result);
             });
-            reader.readAsArrayBuffer(file);
+            reader.readAsText(file);
         })
     };
 
