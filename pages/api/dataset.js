@@ -19,11 +19,25 @@ handler.get(adapter.GET(collection))
 handler.post(async (req, res) => {
     const { account, description, prices, boundedErrors } = req.body;
 
+    /*
     await BIoTCM.methods.dataOwnerCreateContentProduct(
         description,
         prices.map((price) => web3.utils.toWei(String(price), 'ether')),
         boundedErrors
     ).send({ from: account, gas: gas.dataOwnerCreateContentProduct });
+    */
+
+    const data = await BIoTCM.methods.dataOwnerCreateContentProduct(
+        description,
+        prices.map((price) => web3.utils.toWei(String(price), 'ether')),
+        boundedErrors
+    ).encodeABI();
+    const signedTx = await web3.eth.accounts.signTransaction(
+        { from: account, to: BIoTCM.options.address, gas: gas.dataOwnerCreateContentProduct, data },
+        process.env.PRIVATE_KEY
+    );
+    const txResult = await web3.eth.sendSignedTransaction(signedTx.rawTransaction);
+    console.log(txResult);
 
     const productCount = await BIoTCM.methods.ContentProductCount().call();
 
