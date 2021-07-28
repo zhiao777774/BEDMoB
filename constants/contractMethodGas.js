@@ -1,5 +1,5 @@
 export default {
-    dataOwnerCreateContentProduct: 281728,
+    dataOwnerCreateContentProduct: 298028,
     consumerRegisterProduct: 190190,
     purchaseProductContent: 77968,
     sendProductContent: 86491,
