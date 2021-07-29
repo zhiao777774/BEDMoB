@@ -25,6 +25,12 @@ export default class Profile extends Component {
             return;
         }
 
+        const privateKey = prompt('輸入您的錢包私鑰，以作為交易簽章使用');
+        if (!privateKey) {
+            alert('請輸入錢包私鑰');
+            return;
+        }
+
         this.setState({ disabled: true });
         const res = await fetch('/api/accounts', {
             method: 'PATCH',
@@ -36,7 +42,8 @@ export default class Profile extends Component {
                 condition: {
                     account: this.props.user.account
                 },
-                update: { publicKey }
+                update: { publicKey },
+                privateKey
             })
         });
 
