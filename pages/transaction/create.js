@@ -186,7 +186,7 @@ class Register extends Component {
                                 全部重置
                                 </button>
                             <span className={'btn btn-lg ml-6 ' + (disabled ? 'bg-gray-300 cursor-not-allowed' : 'btn-danger')}>
-                                <Link href={disabled ? '#' : '/'}><a>取消</a></Link>
+                                <Link prefetch href={disabled ? '#' : '/'}><a>取消</a></Link>
                             </span>
                         </div>
                     </form>

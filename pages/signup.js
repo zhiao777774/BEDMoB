@@ -58,7 +58,7 @@ export default class Signup extends Component {
                     </div>
                     <div className="ml-12 font-bold absolute top-4  right-10">
                         <span className="text-gray-600 inline-block">已經有帳戶?</span>
-                        <Link href="/login"><a className="ml-2 text-blue-700 hover:underline">登入</a></Link>
+                        <Link prefetch href="/login"><a className="ml-2 text-blue-700 hover:underline">登入</a></Link>
                     </div>
                     <div className="group-modal inline-block w-96 pt-3">
                         <div className="header">

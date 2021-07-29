@@ -341,7 +341,7 @@ export default class Requester extends Component {
                                                                 <div>
                                                                     <input type="file" disabled={btnUpload[_id] && btnUpload[_id].disabled}
                                                                         onChange={this._handleFileUpload} d-id={_id}
-                                                                        d-data={JSON.stringify({ productCount, owner, consumer })}
+                                                                        d-data={JSON.stringify({ productCount, owner, consumer, boundedError })}
                                                                     />
                                                                     <button d-id={_id} className={'btn ' + (btnUpload[_id] && btnUpload[_id].disabled ? 'bg-gray-300 cursor-not-allowed' : 'btn-success')}
                                                                         onClick={this._upload}>

@@ -178,7 +178,7 @@ class Index extends Component {
                         {
                             this.props.user !== 'undefined' ?
                                 <button className="group absolute -bottom-2 left-3 btn btn-sm pt-2 bg-gray-200 hover:bg-gray-300">
-                                    <Link href="/watchlist">
+                                    <Link prefetch={false} href="/watchlist">
                                         <a>
                                             <FontAwesomeIcon icon={faHollowStar} size="sm" className="relative -top-0.5 text-gray-500 group-hover:text-black" />
                                             <span className="ml-2 relative -top-0.5">關注列表</span>
