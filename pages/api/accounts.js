@@ -48,12 +48,35 @@ handler.patch(async (req, res) => {
     const { condition, update } = req.body;
 
     if (update.publicKey) {
+        /*
         await BIoTCM.methods.consumerRegisterProduct(update.publicKey)
             .send({ from: condition.account, gas: gas.consumerRegisterProduct })
             .catch((err) => {
                 console.error(err);
                 return res.status(403).end();
-            })
+            });
+        */
+
+        const data = await BIoTCM.methods.consumerRegisterProduct(update.publicKey).encodeABI();
+        const signedTx = await web3.eth.accounts.signTransaction(
+            {
+                from: condition.account,
+                to: BIoTCM.options.address,
+                gas: gas.consumerRegisterProduct,
+                data
+            },
+            process.env.PRIVATE_KEY
+        ).catch((err) => {
+            console.error(err);
+            return res.status(403).end();
+        });
+        const txResult = await web3.eth
+            .sendSignedTransaction(signedTx.rawTransaction)
+            .catch((err) => {
+                console.error(err);
+                return res.status(403).end();
+            });
+        console.log(txResult);
 
         const origin = req.session.get('user');
         await req.session.destroy('user');
