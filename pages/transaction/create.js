@@ -41,6 +41,14 @@ class Register extends Component {
 
         if (confirm('確定新增?')) {
             this.setState({ disabled: true });
+
+            const privateKey = prompt('輸入您的錢包私鑰，以作為交易簽章使用');
+            if (!privateKey) {
+                alert('請輸入錢包私鑰');
+                this.setState({ disabled: false });
+                return;
+            }
+
             const res = await fetch('/api/dataset', {
                 method: 'POST',
                 headers: {
@@ -48,6 +56,7 @@ class Register extends Component {
                 },
                 body: JSON.stringify({
                     account: this.props.user.account,
+                    privateKey,
                     ...postData
                 })
             }).catch(() => {

@@ -45,7 +45,7 @@ handler.delete(async (req, res) => {
 });
 
 handler.patch(async (req, res) => {
-    const { condition, update } = req.body;
+    const { condition, update, privateKey } = req.body;
 
     if (update.publicKey) {
         /*
@@ -65,7 +65,7 @@ handler.patch(async (req, res) => {
                 gas: gas.consumerRegisterProduct,
                 data
             },
-            process.env.PRIVATE_KEY
+            privateKey
         ).catch((err) => {
             console.error(err);
             return res.status(403).end();

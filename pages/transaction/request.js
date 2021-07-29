@@ -133,6 +133,12 @@ export default class Requester extends Component {
             return;
         }
 
+        const privateKey = prompt('輸入您的錢包私鑰，以作為交易簽章使用');
+        if (!privateKey) {
+            alert('請輸入錢包私鑰');
+            return;
+        }
+
         this.setState({
             btnUpload: {
                 ...this.state.btnUpload,
@@ -145,7 +151,8 @@ export default class Requester extends Component {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 data,
-                _id: id
+                _id: id,
+                privateKey
             })
         });
 
@@ -244,7 +251,7 @@ export default class Requester extends Component {
                             <tr className="text-xs border-b border-gray-100 tracking-wider text-black">
                                 <th className="sticky top-18 bg-indigo-50 z-40 p-3 text-left leading-4 cursor-pointer pl-9" d-val="#" onClick={this._sort}>
                                     #
-                                        {
+                                    {
                                         orderby === '#' ?
                                             <FontAwesomeIcon icon={asc ? faSortUp : faSortDown} size="lg" className={'ml-1 ' + (asc ? 'pt-1' : 'pb-1')} /> :
                                             null
@@ -252,7 +259,7 @@ export default class Requester extends Component {
                                 </th>
                                 <th className="sticky top-18 bg-indigo-50 z-40 p-3 text-right leading-4 cursor-pointer" d-val="描述" onClick={this._sort}>
                                     描述
-                                        {
+                                    {
                                         orderby === '描述' ?
                                             <FontAwesomeIcon icon={asc ? faSortUp : faSortDown} size="lg" className={'ml-1 ' + (asc ? 'pt-1' : 'pb-1')} /> :
                                             null
@@ -260,7 +267,7 @@ export default class Requester extends Component {
                                 </th>
                                 <th className="sticky top-18 bg-indigo-50 z-40 p-3 text-right leading-4 cursor-pointer" d-val="價格(Wei)" onClick={this._sort}>
                                     價格(Wei)
-                                        {
+                                    {
                                         orderby === '價格(Wei)' ?
                                             <FontAwesomeIcon icon={asc ? faSortUp : faSortDown} size="lg" className={'ml-1 ' + (asc ? 'pt-1' : 'pb-1')} /> :
                                             null
@@ -268,7 +275,7 @@ export default class Requester extends Component {
                                 </th>
                                 <th className="sticky top-18 bg-indigo-50 z-40 p-3 text-right leading-4 cursor-pointer" d-val="資料有限誤差" onClick={this._sort}>
                                     資料有限誤差
-                                        {
+                                    {
                                         orderby === '資料有限誤差' ?
                                             <FontAwesomeIcon icon={asc ? faSortUp : faSortDown} size="lg" className={'ml-1 ' + (asc ? 'pt-1' : 'pb-1')} /> :
                                             null
@@ -278,7 +285,7 @@ export default class Requester extends Component {
                                     display === 'owner' ?
                                         <th className="sticky top-18 bg-indigo-50 z-40 p-3 text-center leading-4 cursor-pointer" d-val="資料集購買者" onClick={this._sort}>
                                             資料集購買者
-                                        {
+                                            {
                                                 orderby === '資料集購買者' ?
                                                     <FontAwesomeIcon icon={asc ? faSortUp : faSortDown} size="lg" className={'ml-1 ' + (asc ? 'pt-1' : 'pb-1')} /> :
                                                     null
@@ -290,7 +297,7 @@ export default class Requester extends Component {
                                     display === 'consumer' ?
                                         <th className="sticky top-18 bg-indigo-50 z-40 p-3 text-center leading-4 cursor-pointer" d-val="資料集擁有者" onClick={this._sort}>
                                             資料集擁有者
-                                        {
+                                            {
                                                 orderby === '資料集擁有者' ?
                                                     <FontAwesomeIcon icon={asc ? faSortUp : faSortDown} size="lg" className={'ml-1 ' + (asc ? 'pt-1' : 'pb-1')} /> :
                                                     null

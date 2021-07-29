@@ -17,7 +17,7 @@ handler.get(adapter.GET(collection))
     .delete(adapter.DELETE(collection));
 
 handler.post(async (req, res) => {
-    const { account, description, prices, boundedErrors } = req.body;
+    const { account, description, prices, boundedErrors, privateKey } = req.body;
 
     /*
     await BIoTCM.methods.dataOwnerCreateContentProduct(
@@ -34,7 +34,7 @@ handler.post(async (req, res) => {
     ).encodeABI();
     const signedTx = await web3.eth.accounts.signTransaction(
         { from: account, to: BIoTCM.options.address, gas: gas.dataOwnerCreateContentProduct, data },
-        process.env.PRIVATE_KEY
+        privateKey
     );
     const txResult = await web3.eth.sendSignedTransaction(signedTx.rawTransaction);
     console.log(txResult);
