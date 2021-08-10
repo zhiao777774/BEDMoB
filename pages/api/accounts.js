@@ -15,22 +15,31 @@ db.connect();
 handler.use(db.middleware).use(session);
 
 handler.post(async (req, res) => {
-    const { account, password } = req.body;
-    const bias = '^vfbvbtadso!mpy';
+    let { privateKey } = req.body;
+    if (!privateKey.startsWith('0x')) privateKey = '0x' + privateKey;
+    const accountData = web3.eth.accounts.privateKeyToAccount(privateKey);
 
-    const doc = await req.db.collection('account').findOne({
-        account: md5(md5(account + bias))
-    });
-
-    if (doc && md5(md5(password + bias)) === doc.password) {
+    if (accountData) {
+        const account = accountData.address;
         const balance = await web3.eth.getBalance(account, 'latest');
         let balanceWei = web3.utils.fromWei(balance.toString(), 'ether').toString();
         balanceWei = parseFloat(balanceWei).toFixed(2);
 
+        const bias = '^vfbvbtadso!mpy';
+        const doc = await req.db.collection('account').findOne({
+            account: md5(md5(account + bias))
+        });
+
+        if (!doc) {
+            await req.db.collection('account').insertOne({
+                account: md5(md5(account + bias))
+            });
+        }
+
         req.session.set('user', {
             account,
             balance: balanceWei,
-            publicKey: doc.publicKey || undefined
+            publicKey: (doc && doc.publicKey) || undefined
         });
         await req.session.save();
         return res.status(201).end();
