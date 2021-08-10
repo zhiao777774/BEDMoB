@@ -31,10 +31,16 @@ class Wallet extends Component {
         if (confirm(`確定要轉帳 ${price} Wei 給 ${owner}?`)) {
             this.setState({ disabled: true });
 
+            const gas = await BIoTCM.methods.purchaseProductContent(productCount)
+                .estimateGas({
+                    from: consumer,
+                    value: web3.utils.toWei(String(price), 'ether')
+                });
+
             await window.ethereum.request({ method: 'eth_requestAccounts' });
             BIoTCM.methods.purchaseProductContent(productCount).send({
                 from: consumer,
-                gas: gas.purchaseProductContent,
+                gas: gas + 1,
                 value: web3.utils.toWei(String(price), 'ether')
             }).then((txHash) => {
                 console.log(txHash);
