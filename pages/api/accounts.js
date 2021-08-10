@@ -26,15 +26,9 @@ handler.post(async (req, res) => {
         balanceWei = parseFloat(balanceWei).toFixed(2);
 
         const bias = '^vfbvbtadso!mpy';
-        const doc = await req.db.collection('account').findOne({
-            account: md5(md5(account + bias))
-        });
-
-        if (!doc) {
-            await req.db.collection('account').insertOne({
-                account: md5(md5(account + bias))
-            });
-        }
+        const col = req.db.collection('account');
+        const doc = await col.findOne({ account: md5(md5(account + bias)) });
+        if (!doc) await col.insertOne({ account: md5(md5(account + bias)) });
 
         req.session.set('user', {
             account,
