@@ -17,14 +17,12 @@ export default class Login extends Component {
     }
 
     async _login(event) {
-        event.preventDefault(); // don't redirect the page
+        event.preventDefault();
 
-        let { account, password } = event.target;
-        account = account.value;
-        password = password.value;
+        const privateKey = event.target.privateKey.value;
 
-        if (!account || !password) {
-            alert('請輸入帳號及密碼');
+        if (!privateKey) {
+            alert('請輸入錢包私鑰字串');
             return;
         }
 
@@ -32,13 +30,13 @@ export default class Login extends Component {
         const res = await fetch('/api/accounts', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ account, password })
+            body: JSON.stringify({ privateKey })
         });
 
         if (res.ok) {
             return Router.push('/');
         } else {
-            alert('登入失敗，請重新確認帳號密碼!');
+            alert('登入失敗，請重新確認私鑰字串是否正確!');
             this.setState({ disabled: false });
         }
     }
@@ -56,23 +54,18 @@ export default class Login extends Component {
                             </a>
                         </Link>
                     </div>
-                    <div className="ml-12 font-bold absolute top-4 right-10">
-                        <span className="text-gray-600 inline-block">沒有帳戶?</span>
-                        <Link prefetch href="/signup"><a className="ml-2 text-blue-700 hover:underline">註冊</a></Link>
-                    </div>
-                    <div className="group-modal inline-block w-96 pt-3">
+                    <div className="group-modal inline-block pt-3" style={{ width: '450px' }}>
                         <div className="header">
                             <div className="title font-bold">登入</div>
                         </div>
-                        <div className="p-6">
+                        <div className="px-10 py-6">
                             <form onSubmit={this._login}>
-                                <div className="inline-flex items-center mb-6">
-                                    <label className="text-gray-700 text-sm font-bold mb-1" htmlFor="input-account">帳號</label>
-                                    <input type="text" name="account" id="input-account" className="form-input w-72 shadow appearance-none border rounded ml-4 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="請輸入錢包地址" />
-                                </div>
-                                <div className="inline-flex items-center mb-8">
-                                    <label className="text-gray-700 text-sm font-bold mb-1" htmlFor="input-password">密碼</label>
-                                    <input type="password" name="password" id="input-password" className="form-input w-72 shadow appearance-none border rounded ml-4 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="請輸入密碼" />
+                                <div className="items-center mb-6">
+                                    <label className="text-gray-700 text-sm font-bold mb-1" htmlFor="input-privateKey">錢包私鑰</label>
+                                    <br />
+                                    <input type="text" name="privateKey" id="input-privateKey"
+                                        className="form-input w-full shadow appearance-none border rounded mt-3 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                        placeholder="請輸入私鑰字串" />
                                 </div>
                                 <div className="flex items-center justify-between">
                                     <button type="submit" className={'btn ' + (disabled ? 'bg-gray-300 cursor-not-allowed' : 'btn-primary')} disabled={disabled}>
