@@ -8,12 +8,11 @@ export async function upload(content, publicKey = undefined, privateKey = undefi
     if (publicKey) {
         content = encryptLongContent(publicKey, content);
         /* 
-        const { publicKey, sig, msgHash } = await ecdsaEncrypt(
-            content, Buffer.from(Uint8Array.from(Buffer.from(privateKey, 'hex')))
+        const { publicKey, signature, msgHash } = await ecdsaEncrypt(
+            content
         );
-        content = msgHash;
         */
-        // const { keys, signature } = multiSigEncrypt(content,  publicKey);
+        // const { keys, signature, signatures } = multiSigEncrypt(content);
         content = Buffer.from(content, 'utf-8');
     }
 
@@ -22,6 +21,8 @@ export async function upload(content, publicKey = undefined, privateKey = undefi
 
     return {
         hash: productContentHash,
-        path: `https://ipfs.infura.io/ipfs/${productContentHash}`
+        path: `https://ipfs.infura.io/ipfs/${productContentHash}`,
+        // signature,
+        // keys
     };
 }
