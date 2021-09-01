@@ -1,9 +1,10 @@
 {
-  "name": "bepdpp-dapp",
+  "name": "BEDMoB",
   "scripts": {
     "dev": "node server.js",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "test": "mocha --require babel-register --bail"
   },
   "version": "1.0.0",
   "description": "",
@@ -11,6 +12,18 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "//babel": {
+    "presets": [
+      [
+        "env",
+        {
+          "exclude": [
+            "transform-regenerator"
+          ]
+        }
+      ]
+    ]
+  },
   "dependencies": {
     "@fontsource/oswald": "^4.2.2",
     "@fortawesome/fontawesome-svg-core": "^1.2.34",
@@ -36,6 +49,9 @@
   "devDependencies": {
     "@tailwindcss/custom-forms": "^0.2.1",
     "autoprefixer": "^10.2.4",
+    "babel-preset-env": "^1.7.0",
+    "babel-register": "^6.26.0",
+    "mocha": "^9.1.1",
     "postcss": "^8.2.7",
     "tailwindcss": "^2.0.4"
   }
