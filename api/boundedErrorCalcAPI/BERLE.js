@@ -1,3 +1,5 @@
+import { RLE } from './RLE';
+
 export class BERLE {
     constructor(boundedError = undefined) {
         this._boundedError = boundedError;
@@ -42,7 +44,7 @@ export class BERLE {
                 precisionRLE.push(counter);
 
                 for (let i = 0; i < counter; i++)
-                    precisionResult.push(round(lowerBound, 3))
+                    precisionResult.push(Math.round(lowerBound, 3))
                 break;
             }
 
@@ -70,7 +72,7 @@ export class BERLE {
                 precisionRLE.push(counter);
 
                 for (let i = 0; i < counter; i++)
-                    precisionResult.push(round(lowerBound, 3));
+                    precisionResult.push(Math.round(lowerBound, 3));
                 counter = 1;
                 upperBound = upperBounded[index];
                 lowerBound = lowerBounded[index];
@@ -79,6 +81,6 @@ export class BERLE {
             index += 1;
         }
 
-        return precisionResult;
+        return RLE.compressText(precisionResult.join('\r\n'));
     }
 }
