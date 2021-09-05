@@ -43,3 +43,15 @@ export function getDatesBetween(startDate, endDate) {
 export function getDiffDays(startDate, endDate) {
     return startDate - endDate / (1000 * 3600 * 24);
 }
+
+export class Timer {
+    start() {
+        this._start = new Date().getTime();
+        return this;
+    }
+
+    stop() {
+        this._end = new Date().getTime();
+        return (this._end - this._start) / 1000;
+    }
+}
