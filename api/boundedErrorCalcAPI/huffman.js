@@ -41,6 +41,30 @@ export class HuffmanTree {
         return this._codeBook;
     }
 
+    set codeBook(value) {
+        if (typeof value !== 'object' || value === null || Array.isArray(value))
+            throw new Error('CodeBook must is Object with key-value pair.');
+        this._codeBook = value;
+
+        const root = new Node(undefined, '');
+        let node = root;
+        Object.keys(this._codeBook).forEach((val) => {
+            const len = this._codeBook[val].length;
+            for (let i = 1; i < len; i++) {
+                if (char === 0) {
+                    node.left ||= new Node(undefined, i === len - 1 ? val : '');
+                    node = node.left;
+                } else {
+                    node.right ||= new Node(undefined, i === len - 1 ? val : '');
+                    node = node.right;
+                }
+            }
+            node = root;
+        });
+        
+        this._huffmanTree = root;
+    }
+
     get huffmanTree() {
         return this._huffmanTree
     }
