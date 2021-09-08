@@ -57,15 +57,15 @@ export class RLE {
         return result;
     }
 
-    static decode(text, withNumbers = false) {
-        if (withNumbers) return RLE.decodeArray(text.split(''));
+    static decode(text, withNumbers = false, separator = '') {
+        if (withNumbers) return RLE.decodeArray(text.split(separator));
         return text.replace(/(\d+)([ \w])/g, (_, count, chr) => chr.repeat(count));
     }
 
-    static decodeArray(array) {
+    static decodeArray(array, postfix = '\n') {
         let result = '';
         for (let i = 0; i < array.length; i += 2)
-            result += array[i + 1].repeat(array[i]);
+            result += (array[i + 1] + postfix).repeat(Number(array[i]));
 
         return result;
     }
