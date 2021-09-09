@@ -18,7 +18,7 @@ export class BERLE {
         return this._boundedError || 0.0;
     }
 
-    execute(data) {
+    execute(data, postfix = ' ') {
         if (!data.every((d) => { return typeof d === 'number' }))
             throw new Error('data must be Number Array.');
         else if (typeof this._boundedError === 'undefined')
@@ -81,6 +81,11 @@ export class BERLE {
             index += 1;
         }
 
-        return RLE.compressText(precisionResult.join('\r\n'));
+        let berleResult = '';
+        for (let i = 0; i < precisionRLE.length; i += 2) {
+            berleResult += precisionRLE[i + 1] + ' ' + precisionRLE[i] + postfix;
+        }
+
+        return berleResult;
     }
 }
