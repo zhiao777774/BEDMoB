@@ -62,7 +62,7 @@ export class RLE {
         return text.replace(/(\d+)([ \w])/g, (_, count, chr) => chr.repeat(count));
     }
 
-    static decodeArray(array, postfix = '\n') {
+    static decodeArray(array, postfix = ' ') {
         let result = '';
         for (let i = 0; i < array.length; i += 2)
             result += (array[i + 1] + postfix).repeat(Number(array[i]));
