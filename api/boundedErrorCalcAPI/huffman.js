@@ -181,13 +181,18 @@ export class HuffmanTree {
     }
 
     decodeNode(data) {
-        const reader = new BitReader(data);
+        const dataByteCount = data.readUInt32LE(0);
+        const reader = new BitReader(data.slice(4));
         const root = this._readNode(reader);
 
         this._huffmanTree = root;
         this._codeBook = this.getHuffmanCode();
         this._codeBookEncoded = this.encodeNode(this._huffmanTree);
-        this._binaryStr = reader.nodes.map((d) => Number(d).toString(2).padStart(8, '0')).join('');
+
+        let binary = '';
+        for (let i = 0; i < dataByteCount; i++)
+            binary += Number(reader.nodes[i]).toString(2).padStart(8, '0');
+        this._binaryStr = binary;
 
         return this;
     }
