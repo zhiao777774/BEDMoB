@@ -7,14 +7,32 @@ class Node {
     }
 }
 
+class BitReader {
+    constructor(data) {
+        this._nodes = [...data];
+    }
+
+    get nodes() {
+        return this._nodes;
+    }
+
+    readBit() {
+        const val = String.fromCharCode(this._nodes[0]);
+        this._nodes = this._nodes.slice(1);
+        return val;
+    }
+}
+
 export class HuffmanTree {
     constructor(str) {
+        if (str === undefined) return this;
+
         // The first step is to count the frequency of characters  
-        let hash = {};
+        let frequency = {};
         for (let i = 0; i < str.length; i++) {
-            hash[str[i]] = ~~hash[str[i]] + 1;
+            frequency[str[i]] = ~~frequency[str[i]] + 1;
         }
-        this._hash = hash;
+        this._frequency = frequency;
 
         // Constructing Huffman tree  
         this._huffmanTree = this.getHuffmanTree();
@@ -24,6 +42,8 @@ export class HuffmanTree {
 
         // Final binary encoding  
         this._binaryStr = this.encode(str);
+
+        this._codeBookEncoded = this.encodeNode(this._huffmanTree);
 
         // Calculate Compression Ratio
         this._compressionRatio = this.calculateCompressionRatio(str);
@@ -37,32 +57,16 @@ export class HuffmanTree {
         return this._binaryStr;
     }
 
+    get codeBookEncoded() {
+        return this._codeBookEncoded;
+    }
+
     get codeBook() {
         return this._codeBook;
     }
 
-    set codeBook(value) {
-        if (typeof value !== 'object' || value === null || Array.isArray(value))
-            throw new Error('CodeBook must is Object with key-value pair.');
-        this._codeBook = value;
-
-        const root = new Node(undefined, '');
-        let node = root;
-        Object.keys(this._codeBook).forEach((val) => {
-            const len = this._codeBook[val].length;
-            for (let i = 1; i < len; i++) {
-                if (char === 0) {
-                    node.left ||= new Node(undefined, i === len - 1 ? val : '');
-                    node = node.left;
-                } else {
-                    node.right ||= new Node(undefined, i === len - 1 ? val : '');
-                    node = node.right;
-                }
-            }
-            node = root;
-        });
-        
-        this._huffmanTree = root;
+    get frequency() {
+        return this._frequency;
     }
 
     get huffmanTree() {
@@ -73,8 +77,8 @@ export class HuffmanTree {
     getHuffmanTree() {
         // The number of occurrences of each character is node.val , tectonic forest  
         let forest = []
-        for (let char in this._hash) {
-            let node = new Node(this._hash[char], char);
+        for (let char in this._frequency) {
+            let node = new Node(this._frequency[char], char);
             forest.push(node);
         }
 
@@ -157,5 +161,45 @@ export class HuffmanTree {
         }
 
         return (1 - (compressed / original)).toFixed(2);
+    }
+
+    encodeNode(node) {
+        if (!node) return '';
+
+        let data = '';
+        if (!node.left && !node.right) {
+            data += '1';
+            data += node.char;
+        }
+        else {
+            data += '0';
+            data += this.encodeNode(node.left);
+            data += this.encodeNode(node.right);
+        }
+
+        return data;
+    }
+
+    decodeNode(data) {
+        const reader = new BitReader(data);
+        const root = this._readNode(reader);
+
+        this._huffmanTree = root;
+        this._codeBook = this.getHuffmanCode();
+        this._codeBookEncoded = this.encodeNode(this._huffmanTree);
+        this._binaryStr = reader.nodes.map((d) => Number(d).toString(2).padStart(8, '0')).join('');
+
+        return this;
+    }
+
+    _readNode(reader) {
+        if (reader.readBit() === '1') {
+            return new Node(undefined, reader.readBit(), undefined, undefined);
+        } else {
+            const leftChild = this._readNode(reader);
+            const rightChild = this._readNode(reader);
+
+            return new Node(undefined, 0, leftChild, rightChild);
+        }
     }
 }
