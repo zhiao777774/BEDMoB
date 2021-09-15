@@ -160,7 +160,7 @@ class Index extends Component {
                     const [n1, n2] = [item1.description.toUpperCase(), item2.description.toUpperCase()];
                     return (n1 < n2 ? -1 : 1) * (asc ? 1 : -1);
                 case '價格(Wei)':
-                    return (item1.price - item2.price) * (asc ? 1 : -1);
+                    return (item1.prices[0] - item2.prices[0]) * (asc ? 1 : -1);
                 case '擁有者':
                     const [o1, o2] = [item1.owner.toUpperCase(), item2.owner.toUpperCase()];
                     return (o1 < o2 ? -1 : 1) * (asc ? 1 : -1);
