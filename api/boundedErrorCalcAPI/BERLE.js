@@ -1,15 +1,8 @@
 export class BERLE {
-    constructor(boundedError = undefined) {
-        this._boundedError = boundedError;
-    }
-
-    /**
-     * @param {number} value
-     */
-    set boundedError(value) {
-        if (typeof value !== 'number')
+    constructor(boundedError) {
+        if (typeof boundedError !== 'number')
             throw new Error('Bounded-Error value must be a Number');
-        this._boundedError = value;
+        this._boundedError = boundedError;
     }
 
     get boundedError() {
@@ -77,7 +70,7 @@ export class BERLE {
                 counter = 1;
                 upperBound = upperBounded[index];
                 lowerBound = lowerBounded[index];
-            }
+            } 
 
             index += 1;
         }
@@ -92,9 +85,12 @@ export class BERLE {
 }
 
 export class WatermarkBERLE extends BERLE {
-    constructor(boundedError = undefined, watermark) {
+    constructor(boundedError, sm) {
         super(boundedError);
-        this._watermark = watermark;
+
+        if (typeof sm !== 'string')
+            throw new Error('Message value must be a String');
+        this._secretMessage = sm;
     }
 
     static convertBinary(data) {
@@ -103,7 +99,7 @@ export class WatermarkBERLE extends BERLE {
     }
 
     execute(data, postfix = ' ') {
-        const wmBinary = WatermarkBERLE.convertBinary(this._watermark);
+        const wmBinary = WatermarkBERLE.convertBinary(this._secretMessage);
         const wmSize = wmBinary.length * 8 + wmBinary.length;
 
         const BE = {};
